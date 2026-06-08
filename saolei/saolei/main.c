@@ -15,6 +15,19 @@ void menu()
 	return;
 }
 
+void show(char b[11][11])
+{
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			printf("%c ", b[i][j]);
+		}
+		printf("\n");
+	}
+
+}
+
 
 void play()
 {
@@ -38,17 +51,6 @@ void play()
 		}
 		
 	}
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0 ;j < 10; j++)
-		{
-			printf("%c ", board1[i][j]);
-		}
-		printf("\n");
-	}
-		printf("\n");
-		printf("\n");
-		printf("\n");
 
 
 	//生成9x9雷区
@@ -64,8 +66,8 @@ void play()
 	int n = 10;
 	while (n)
 	{
-		int x = rand() % 9 + 1;
-		int y = rand() % 9 + 1;
+		x = rand() % 9 + 1;
+		y = rand() % 9 + 1;
 		if (board2[x][y] == 48)
 		{
 			board2[x][y] = '1';
@@ -73,16 +75,59 @@ void play()
 		}
 	
 	}
-	for (int i = 0; i <= 10; i++)
-	{
-		for (int j = 0; j <= 10; j++)
-		{
-			printf("%c ", board2[i][j]);
-		}
-		printf("\n");
-	}
 
-	//scanf("%d%d",&x,&y);
+	
+
+
+
+	n = 81;
+	int num = 0;//周围雷数
+	int flag = 0;//踩雷标志
+	while ( n > 10 && flag == 0)
+	{
+
+		show(board1);
+
+		//展示雷区
+		//printf("\n");
+		//show(board2);
+
+
+		scanf("%d %d",&x,&y);
+		if (!(x > 0 && x < 10 && y > 0 && y < 10))
+		{
+			printf("输入错误\n");
+			continue;
+		}
+		if (board2[x][y] == '1')
+		{
+			flag = 1;
+			break;
+		}
+		num = 0;
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				if (board2[x + i][y + j] == '1')
+					num++;
+			}
+		}
+		if (board1[x][y] == '*')
+			n--;
+		board1[x][y] = num + '0';
+		//printf("剩余%d次\n", n);
+		system("cls");
+
+	
+	}
+	if (flag == 1)
+	{
+		printf("已踩雷,游戏结束\n");
+		show(board2);
+	}else
+		printf("恭喜你,成功\n");
+
 	return;
 }
 
@@ -92,7 +137,7 @@ int main()
 	while (a)
 	{
 		menu();
-		scanf("%d",&a);
+		int sca = scanf("%d",&a);
 		system("cls");
 		if (a == 1)
 		{
