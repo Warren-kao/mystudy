@@ -1,6 +1,6 @@
 #include <REGX52.H>
 
-char font[10] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
+char font[11] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x00};
 //0  11000000		00111111
 //1  11111001		00000110
 //2  10100100		01011011
@@ -14,7 +14,24 @@ char font[10] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
 //char pos[8] = {0x1C,0x18,0x14,0x10,0x0C,0x04,0x02,0x00};
 	//00011100,00011000,00010100,00010000,00001100,00000100,00000010,00000000
 
-void show( unsigned int i,char n)
+
+void Delay(unsigned int x)
+{
+	unsigned char i, j;
+	while(x)
+	{
+		i = 2;
+		j = 239;
+		do
+		{
+			while (--j);
+		} while (--i);
+		x--;
+	}
+	
+}
+
+void show(unsigned int i,unsigned int n)
 {
 	switch(i)
 	{
@@ -28,13 +45,18 @@ void show( unsigned int i,char n)
 		case 8:P2_4 = 0;P2_3 = 0;P2_2 = 0;break;
 		
 	}
-	P0 = n;
+	P0 = font[n];
+	Delay(1);
+	P0 = 0x00;
 }
 void main()
 { 
 	
 	while(1)
 	{
-		show(5,font[6]);
+		show(1,1);
+		show(2,2);
+		show(3,3);
+		
 	}
 }
