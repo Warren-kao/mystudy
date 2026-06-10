@@ -69,8 +69,8 @@ mystudy/
 ├── 2.C51/                 # C51 单片机外设例程（LED、数码管、按键、中断、串口等）
 ├── 3.STM32/               # STM32 裸机例程（标准库/HAL库）
 ├── 4.FreeRTOS/            # FreeRTOS 移植与应用（任务、队列、信号量等）
-├── Sensors/                # 传感器驱动（DHT11、DS18B20、OLED、MPU6050等）
-├── Tools/                  # 辅助脚本、链接脚本、配置文件
+├── Sensors/               # 传感器驱动（DHT11、DS18B20、OLED、MPU6050等）
+├── Tools/                 # 辅助脚本、链接脚本、配置文件
 └── LICENSE
 ```
 
