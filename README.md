@@ -23,11 +23,11 @@
 嵌入式学习路线通常包括：C 语言基础 → 8位单片机（如 C51）→ 32位 ARM（如 STM32）→ 实时操作系统（如 FreeRTOS）。为了系统地记录学习过程中的代码和笔记，本仓库按模块组织所有练习例程，方便日后查阅和复用。
 
 主要内容包括：
-**C 语言基础**：指针、结构体、内存管理、数据结构和算法练习
-**C51 单片机**：基于 Keil C51 的 LED、数码管、按键、中断、定时器、串口通信等
-**STM32 开发**：基于标准库 / HAL 库的 GPIO、USART、I2C、SPI、ADC、DMA、定时器、外部中断等
-**FreeRTOS**：在 STM32 上移植 FreeRTOS，实现任务创建、消息队列、信号量、互斥量、软件定时器等
-其他：常用传感器（DHT11、DS18B20、OLED、MPU6050 等）驱动封装
+- **C 语言基础**：指针、结构体、内存管理、数据结构和算法练习
+- **C51 单片机**：基于 Keil C51 的 LED、数码管、按键、中断、定时器、串口通信等
+- **STM32 开发**：基于标准库 / HAL 库的 GPIO、USART、I2C、SPI、ADC、DMA、定时器、外部中断等
+- **FreeRTOS**：在 STM32 上移植 FreeRTOS，实现任务创建、消息队列、信号量、互斥量、软件定时器等
+- 其他：常用传感器（DHT11、DS18B20、OLED、MPU6050 等）驱动封装
 
 ## 安装
 
@@ -39,11 +39,11 @@ cd mystudy
 
 开发环境要求
 
-· C 语言基础：任何支持 C99 的编译器（GCC、Clang、MSVC），推荐使用 Visual Studio 2022
-· C51 开发：Keil C51（uVision） + STC-ISP 烧录工具（或其他 C51 烧录软件）
-· STM32 开发：Keil MDK / STM32CubeIDE + ST-Link / J-Link 调试器
-· FreeRTOS：在 STM32 工程基础上包含 FreeRTOS 源码包（仓库已提供）
-· 通用工具：Make、Git、串口调试助手（XCOM、Minicom、PuTTY）
+- C 语言基础：任何支持 C99 的编译器（GCC、Clang、MSVC），推荐使用 Visual Studio 2022
+- C51 开发：Keil C51（uVision） + STC-ISP 烧录工具（或其他 C51 烧录软件）
+- STM32 开发：Keil MDK / STM32CubeIDE + ST-Link / J-Link 调试器
+- FreeRTOS：在 STM32 工程基础上包含 FreeRTOS 源码包（仓库已提供）
+- 通用工具：Make、Git、串口调试助手（XCOM、Minicom、PuTTY）
 
 各子目录下通常包含独立的 README 或 工程文件，请按需打开。
 
