@@ -83,18 +83,18 @@ mystudy/
 - [FreeRTOS-Kernel](https://github.com/FreeRTOS/FreeRTOS-Kernel) - FreeRTOS 官方内核源码
 - [STC-ISP](http://www.stcmcu.com/) - STC 单片机官方烧录工具及手册
 
-主要项目负责人
+## 主要项目负责人
 
 [@Warren-kao](https://github.com/Warren-kao)
 
-参与贡献方式
+## 参与贡献方式
 
 本项目为个人学习记录，暂不接受直接贡献。如果你发现了错误或有改进建议，欢迎提交 Issue 或通过邮件联系。
 
-贡献人员
+### 贡献人员
 
 [@Warren-kao](https://github.com/Warren-kao) – 主要代码编写与维护
 
-开源协议
+## 开源协议
 
 [MIT](LICENSE) © Warren-kao
