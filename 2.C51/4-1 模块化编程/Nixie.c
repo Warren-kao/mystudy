@@ -1,4 +1,5 @@
 #include <REGX52.H>
+#include"Delay.h"
 
 char font[11] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x00};
 //0  11000000		00111111
@@ -15,21 +16,6 @@ char font[11] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x00};
 	//00011100,00011000,00010100,00010000,00001100,00000100,00000010,00000000
 
 
-void Delay(unsigned int x)
-{
-	unsigned char i, j;
-	while(x)
-	{
-		i = 2;
-		j = 239;
-		do
-		{
-			while (--j);
-		} while (--i);
-		x--;
-	}
-	
-}
 
 void show(unsigned int i,unsigned int n)
 {
@@ -48,15 +34,4 @@ void show(unsigned int i,unsigned int n)
 	P0 = font[n];
 	Delay(1);
 	P0 = 0x00;
-}
-void main()
-{ 
-	
-	while(1)
-	{
-		show(1,6);
-		show(5,4);
-		show(3,3);
-		
-	}
 }
