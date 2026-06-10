@@ -13,6 +13,22 @@ bin-release/
 *.ipa
 *.apk
 
+# Keil 项目忽略规则
+*.uvopt
+*.uvoptx
+*.uvguix.*
+*.bak
+*.o
+*.obj
+*.hex
+*.bin
+*.map
+*.lst
+*.13048
+*.uvgui.13048
+Objects/
+Listings/
+
 #过滤掉不想要文件和文件夹
 *.exe
 *.sln
