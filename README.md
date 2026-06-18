@@ -3,6 +3,7 @@
 [![](https://img.shields.io/badge/%E4%B8%BB%E9%A1%B5-Warren--kao/mystudy-orange)](https://github.com/Warren-kao/mystudy)
 [![](https://img.shields.io/badge/语言-C%2C%20C%2B%2B-blue)](https://github.com/Warren-kao/mystudy)
 [![](https://img.shields.io/badge/平台-C51%2C%20STM32%2C%20FreeRTOS-brightgreen)](https://github.com/Warren-kao/mystudy)
+![](https://komarev.com/ghpvc/?username=Warren-kao&abbreviated=true)
 
 本仓库是个人学习嵌入式过程中的代码记录，涵盖从基础语法到单片机、实时操作系统等多个层次。
 
