@@ -44,14 +44,24 @@ int main()
 	//memcpy(arr2,arr1,20);
 	//my_memcpy(arr2+5,arr1,20);
 	//memmove(arr1+2,arr1,20);
-	my_memmove(arr1+5,arr1,20);
+	//my_memmove(arr1+5,arr1,20);
 
+	//int sz = sizeof(arr1) / sizeof(arr1[0]);
+	//for (int i = 0; i < sz; i++)
+	//{
+	//	printf("%d ", arr1[i]);
+	//}
 
+	//char arr3[] = { "helloword" };
+	//memset(arr3+5, 'x', 3);
+	//printf("%s", arr3);
 
-	int sz = sizeof(arr1) / sizeof(arr1[0]);
-	for (int i = 0; i < sz; i++)
-	{
-		printf("%d ", arr1[i]);
-	}
+	int r = memcmp(arr1,arr2,40);
+	if (r > 0)
+		printf(">");
+	else if (r == 0)
+		printf("=");
+	else
+		printf("<");
 	return 0;
 }
