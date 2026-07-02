@@ -388,6 +388,16 @@
               <FileType>5</FileType>
               <FilePath>.\Delay.h</FilePath>
             </File>
+            <File>
+              <FileName>MatrixKey.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MatrixKey.c</FilePath>
+            </File>
+            <File>
+              <FileName>MatrixKey.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\MatrixKey.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
