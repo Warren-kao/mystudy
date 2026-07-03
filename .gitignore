@@ -28,6 +28,7 @@ bin-release/
 *.uvgui.13048
 Objects/
 Listings/
+.vscode/
 
 #过滤掉不想要文件和文件夹
 *.exe
@@ -42,6 +43,7 @@ Debug/
 .vs
 Release/
 相关资料/
+
 
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
