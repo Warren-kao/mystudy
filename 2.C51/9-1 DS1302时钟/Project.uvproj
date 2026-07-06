@@ -374,6 +374,11 @@
               <FilePath>.\DS1302.c</FilePath>
             </File>
             <File>
+              <FileName>DS1302.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\DS1302.h</FilePath>
+            </File>
+            <File>
               <FileName>Delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Delay.c</FilePath>
@@ -384,11 +389,6 @@
               <FilePath>.\Delay.h</FilePath>
             </File>
             <File>
-              <FileName>DS1302.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\DS1302.h</FilePath>
-            </File>
-            <File>
               <FileName>LCD1602.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\LCD1602.c</FilePath>
@@ -397,6 +397,16 @@
               <FileName>LCD1602.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\LCD1602.h</FilePath>
+            </File>
+            <File>
+              <FileName>Timer0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Timer0.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Timer0.h</FilePath>
             </File>
           </Files>
         </Group>
