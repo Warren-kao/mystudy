@@ -25,19 +25,19 @@ void ShowTime()
 	if(SetFlagNum && (SetFlag==0)&&(MODE==1))
 	{
 		LCD_ShowString(1,1,"  ");
-	}else if(SetFlagNum && (SetFlag==1))
+	}else if(SetFlagNum && (SetFlag==1)&&(MODE==1))
 	{
 		LCD_ShowString(1,4,"  ");
-	}else if(SetFlagNum && (SetFlag==2))
+	}else if(SetFlagNum && (SetFlag==2)&&(MODE==1))
 	{
 		LCD_ShowString(1,7,"  ");
-	}else if(SetFlagNum && (SetFlag==3))
+	}else if(SetFlagNum && (SetFlag==3)&&(MODE==1))
 	{
 		LCD_ShowString(2,1,"  ");
-	}else if(SetFlagNum && (SetFlag==4))
+	}else if(SetFlagNum && (SetFlag==4)&&(MODE==1))
 	{
 		LCD_ShowString(2,4,"  ");
-	}else if(SetFlagNum && (SetFlag==5))
+	}else if(SetFlagNum && (SetFlag==5)&&(MODE==1))
 	{
 		LCD_ShowString(2,7,"  ");
 	}else
