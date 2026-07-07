@@ -43,7 +43,7 @@ unsigned char _10toBCD(unsigned char byte)
   * @param  Data 需要写入的数据
   * @retval 无
   */
-void DS1302_WriteData(unsigned char address,unsigned char Data)
+void DS1302_WriteData(unsigned char address, char Data)
 {
 	unsigned char i;
 	Data = _10toBCD(Data);
@@ -71,7 +71,7 @@ void DS1302_WriteData(unsigned char address,unsigned char Data)
   * @param  address 需要读取数据的寄存器地址
   * @retval unsigned char 返回十进制整数
   */
-unsigned char DS1302_ReadData(unsigned char address)
+unsigned char DS1302_ReadData( char address)
 {
 	unsigned char Data;
 	unsigned char i;
@@ -102,7 +102,7 @@ unsigned char DS1302_ReadData(unsigned char address)
   * @param  *arr 需要写入的数组的指针
   * @retval 无
   */
-void DS1302_WriteTime(unsigned char arr[])
+void DS1302_WriteTime( char arr[])
 {
 	DS1302_WriteData(0x8E,0x00);
 	DS1302_WriteData(0x8C,arr[0]);//年
@@ -121,7 +121,7 @@ void DS1302_WriteTime(unsigned char arr[])
   * @param  *arr 需要写入的数组的指针
   * @retval 无
   */
-void DS1302_ReadTime(unsigned char arr[])
+void DS1302_ReadTime( char arr[])
 {
 	arr[0] = DS1302_ReadData(0x8D);//年
 	arr[1] = DS1302_ReadData(0x89);//月
