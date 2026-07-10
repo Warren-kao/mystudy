@@ -6,6 +6,7 @@ bit OneWire_Init()
 {
 	unsigned char i;
 	bit ack;
+	EA = 0;
 	OneWire_DQ = 1;
 	OneWire_DQ = 0;
 	i = 247;while (--i);//Delay 500us
@@ -13,36 +14,40 @@ bit OneWire_Init()
 	i = 32;while (--i);//Delay  70us
 	ack = OneWire_DQ;
 	i = 247;while (--i);//Delay  500us
+	EA = 1;
 	return ack;
 }
 
 void OneWire_WriteBit(bit Bit)
 {
 	unsigned char i;
+	EA = 0;
 	OneWire_DQ = 0;
 	i = 4;while (--i);//Delay 10us
 	OneWire_DQ = Bit;
 	i = 24;while (--i);//Delay 50us
 	OneWire_DQ = 1;
+	EA = 1;
 }
 
 bit OneWire_ReadBit()
 {
 	bit Bit;
 	unsigned char i;
+	EA = 0;
 	OneWire_DQ = 0;
 	i = 2;while (--i);//Delay 5us
 	OneWire_DQ = 1;
 	i = 2;while (--i);//Delay 5us
 	Bit = OneWire_DQ;
 	i = 24;while (--i);//Delay 50us
+	EA = 1;
 	return Bit;
 }
 
 void OneWire_WriteByte(unsigned char byte)
 {
 	unsigned char i;
-	
 	for(i = 0;i<8;i++)
 	{
 		OneWire_WriteBit(byte&(0x01<<i));

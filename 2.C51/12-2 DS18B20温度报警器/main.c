@@ -11,8 +11,10 @@ char Thigh,Tlow;
 unsigned char KeyNum;
 void main()
 {
-	//Timer0_Init();
+	Timer0_Init();
 	LCD_Init();
+	Thigh = AT24C02_ReadByte(0);
+	Tlow = AT24C02_ReadByte(1);
 	LCD_ShowString(1,1,"T:");
 	LCD_ShowString(1,7,".");
 	while(1)
@@ -34,7 +36,7 @@ void main()
 		/*温度阈值*/
 		LCD_ShowString(2,1,"TH:");
 		LCD_ShowString(2,9,"TL:");
-		LCD_ShowSignedNum(2,4,Thigh,2);
+		LCD_ShowSignedNum(2,4,Thigh,3);
 		LCD_ShowSignedNum(2,12,Tlow,2);
 		
 		/*按键控制*/
@@ -43,26 +45,52 @@ void main()
 		{
 			switch (KeyNum)
 			{
-				case 1:Thigh++;break;
-				case 2:Thigh--;break;
-				case 3:Tlow++;break;
-				case 4:Tlow--;break;
+				case 1:Thigh++;
+					if(Thigh>125)
+					{Thigh--;}
+					break;
+				case 2:Thigh--;
+					if(Thigh<Tlow)
+					{Thigh++;}
+					break;
+				case 3:Tlow++;
+					if(Tlow>Thigh)
+					{Tlow--;}
+					break;
+				case 4:Tlow--;
+					if(Tlow<-55)
+					{Tlow++;}
+					break;
 			}
+			 AT24C02_WriteByte(0,Thigh);
+			 AT24C02_WriteByte(1,Tlow);
+		}
+		
+		/*阈值判断*/
+		if(T>Thigh)
+		{
+			LCD_ShowString(1,12,"OV:H");
+		}else if(T<Tlow)
+		{
+			LCD_ShowString(1,12,"OV:L");
+		}else
+		{
+			LCD_ShowString(1,12,"    ");
 		}
 		
 	}
 }
 
-//void Timer0_Rountine() interrupt 1
-//{	
-//	static unsigned int T0Count;
-//	TH0 = 0xFC;
-//	TL0 = 0x18;
-//	T0Count++;
-//	if(T0Count >= 20)
-//	{
-//		Key_Loop();
-//		T0Count = 0; 
-//	}
-//	
-//}
+void Timer0_Rountine() interrupt 1
+{	
+	static unsigned int T0Count;
+	TH0 = 0xFC;
+	TL0 = 0x18;
+	T0Count++;
+	if(T0Count >= 20)
+	{
+		Key_Loop();
+		T0Count = 0; 
+	}
+	
+}
