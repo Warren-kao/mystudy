@@ -13,5 +13,6 @@ int main()
 	{
 		Num += Encode_Get();
 		OLED_ShowSignedNum(2,1,Num,5);
+		
 	}
 }
