@@ -1051,60 +1051,356 @@ typedef struct
   * @{
   */
 
+/**
+ * @brief 将指定定时器恢复到默认复位状态
+ * @param TIMx: 定时器外设指针 (TIM1~TIM17，取决于芯片型号)
+ * @note 复位后所有寄存器值恢复为上电默认状态，常用于重新初始化前清除配置
+ * @example TIM_DeInit(TIM2); // 复位定时器2
+ */
 void TIM_DeInit(TIM_TypeDef* TIMx);
+
+/**
+ * @brief 初始化定时器的时基单元（计数模式、分频系数等）
+ * @param TIMx: 定时器外设指针
+ * @param TIM_TimeBaseInitStruct: 指向时基初始化结构体的指针，包含：
+ *        - Prescaler: 预分频系数 (0~65535)
+ *        - CounterMode: 计数模式 (向上/向下/中心对齐)
+ *        - Period: 自动重装载值 (ARR)
+ *        - ClockDivision: 时钟分频 (用于死区时间计算)
+ *        - RepetitionCounter: 重复计数器 (仅高级定时器有效)
+ * @example 
+ * TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
+ * TIM_TimeBaseInitStruct.TIM_Prescaler = 7200-1; // 72MHz/7200=10kHz
+ * TIM_TimeBaseInitStruct.TIM_Period = 10000-1;  // 10kHz/10000=1Hz(1秒)
+ * TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;
+ * TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStruct);
+ */
 void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
+
+/**
+ * @brief 初始化定时器通道1的输出比较(OC)功能
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OCInitStruct: 指向输出比较初始化结构体的指针，包含：
+ *        - OCMode: 输出比较模式 (PWM1/PWM2/冻结/翻转等)
+ *        - OutputState: 输出使能状态
+ *        - OutputNState: 互补输出使能(仅高级定时器)
+ *        - Pulse: 比较值 (CCR)
+ *        - OCPolarity: 输出极性
+ *        - OCNPolarity: 互补输出极性(仅高级定时器)
+ *        - OCFastMode: 快速模式使能
+ * @note 通道2~4的初始化函数(TIM_OC2Init~TIM_OC4Init)用法相同，仅通道不同
+ * @example 
+ * TIM_OCInitTypeDef TIM_OCInitStruct;
+ * TIM_OCInitStruct.TIM_OCMode = TIM_OCMode_PWM1;
+ * TIM_OCInitStruct.TIM_OutputState = TIM_OutputState_Enable;
+ * TIM_OCInitStruct.TIM_Pulse = 500; // 占空比50% (假设ARR=1000)
+ * TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
+ * TIM_OC1Init(TIM3, &TIM_OCInitStruct);
+ */
 void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC2Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
+
+/**
+ * @brief 初始化定时器的输入捕获(IC)功能
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ICInitStruct: 指向输入捕获初始化结构体的指针，包含：
+ *        - Channel: 捕获通道 (TIM_Channel_1~4)
+ *        - ICPolarity: 捕获极性 (上升沿/下降沿/双边沿)
+ *        - ICSelection: 输入选择 (直接映射/交叉映射)
+ *        - ICPrescaler: 捕获预分频 (1/2/4/8次事件捕获一次)
+ *        - ICFilter: 输入滤波系数 (0~15)
+ * @example 
+ * TIM_ICInitTypeDef TIM_ICInitStruct;
+ * TIM_ICInitStruct.TIM_Channel = TIM_Channel_1;
+ * TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
+ * TIM_ICInitStruct.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+ * TIM_ICInit(TIM5, &TIM_ICInitStruct); // 初始化TIM5通道1为上升沿捕获
+ */
 void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
+
+/**
+ * @brief 配置定时器的PWM输入模式 (同时使用两个通道测量PWM的频率和占空比)
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ICInitStruct: 指向输入捕获结构体的指针，配置主通道参数
+ * @note 从通道会自动配置为与主通道互补的极性，用于测量占空比
+ * @example 
+ * TIM_ICInitTypeDef TIM_ICInitStruct;
+ * TIM_ICInitStruct.TIM_Channel = TIM_Channel_1; // 主通道
+ * TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
+ * TIM_PWMIConfig(TIM3, &TIM_ICInitStruct); // 配置TIM3为PWM输入模式
+ */
 void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
+
+/**
+ * @brief 配置高级定时器的刹车和死区寄存器(BDTR)
+ * @param TIMx: 高级定时器指针 (仅TIM1、TIM8)
+ * @param TIM_BDTRInitStruct: 指向BDTR结构体的指针，包含：
+ *        - OSSRState/OSSIState: 运行模式下的关闭状态配置
+ *        - LOCKLevel: 锁定级别
+ *        - DeadTime: 死区时间 (0~255)
+ *        - BreakState: 刹车输入使能
+ *        - BreakPolarity: 刹车输入极性
+ *        - AutomaticOutput: 自动输出使能
+ * @example 配置TIM1的死区时间为100ns
+ * TIM_BDTRInitTypeDef TIM_BDTRInitStruct;
+ * TIM_BDTRInitStruct.TIM_DeadTime = 12; // 需根据时钟频率计算
+ * TIM_BDTRConfig(TIM1, &TIM_BDTRInitStruct);
+ */
 void TIM_BDTRConfig(TIM_TypeDef* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);
+
+/**
+ * @brief 初始化定时器时基结构体为默认值
+ * @param TIM_TimeBaseInitStruct: 指向时基结构体的指针
+ * @note 默认值包括：不分频、向上计数、ARR=0xFFFF等
+ * @example 
+ * TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
+ * TIM_TimeBaseStructInit(&TIM_TimeBaseInitStruct); // 初始化结构体
+ */
 void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
+
+/**
+ * @brief 初始化输出比较结构体为默认值
+ * @param TIM_OCInitStruct: 指向输出比较结构体的指针
+ * @note 其他结构体初始化函数(TIM_ICStructInit、TIM_BDTRStructInit)用法类似
+ */
 void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct);
 void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct);
+
+/**
+ * @brief 使能或禁用定时器计数器
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example TIM_Cmd(TIM2, ENABLE); // 启动TIM2计数器
+ */
 void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 使能或禁用高级定时器的PWM输出
+ * @param TIMx: 高级定时器指针 (TIM1、TIM8)
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @note 必须在TIM_Cmd之后调用才能激活PWM输出
+ * @example TIM_CtrlPWMOutputs(TIM1, ENABLE); // 使能TIM1的PWM输出
+ */
 void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 配置定时器的中断使能
+ * @param TIMx: 定时器外设指针
+ * @param TIM_IT: 中断类型 (TIM_IT_Update/TIM_IT_CC1等)
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); // 使能TIM2更新中断
+ */
 void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState);
+
+/**
+ * @brief 强制生成指定的定时器事件
+ * @param TIMx: 定时器外设指针
+ * @param TIM_EventSource: 事件源 (TIM_EventSource_Update/TIM_EventSource_CC1等)
+ * @example TIM_GenerateEvent(TIM3, TIM_EventSource_Update); // 强制生成更新事件
+ */
 void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource);
+
+/**
+ * @brief 配置定时器的DMA参数
+ * @param TIMx: 定时器外设指针
+ * @param TIM_DMABase: DMA传输的基础地址 (通常为CCR寄存器地址)
+ * @param TIM_DMABurstLength: DMA突发长度 (1/2/3/4次传输)
+ * @example 配置TIM4的DMA传输
+ * TIM_DMAConfig(TIM4, TIM_DMABase_CCR1, TIM_DMABurstLength_1Transfer);
+ */
 void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength);
+
+/**
+ * @brief 使能或禁用定时器的DMA请求
+ * @param TIMx: 定时器外设指针
+ * @param TIM_DMASource: DMA请求源 (TIM_DMASource_Update/TIM_DMASource_CC1等)
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example TIM_DMACmd(TIM4, TIM_DMASource_CC1, ENABLE); // 使能TIM4的CC1 DMA请求
+ */
 void TIM_DMACmd(TIM_TypeDef* TIMx, uint16_t TIM_DMASource, FunctionalState NewState);
+
+/**
+ * @brief 配置定时器使用内部时钟源
+ * @param TIMx: 定时器外设指针
+ * @example TIM_InternalClockConfig(TIM2); // TIM2使用内部时钟
+ */
 void TIM_InternalClockConfig(TIM_TypeDef* TIMx);
+
+/**
+ * @brief 配置定时器使用内部触发作为外部时钟源
+ * @param TIMx: 定时器外设指针
+ * @param TIM_InputTriggerSource: 触发源 (如TIM_TS_ITR0表示来自TIM1的触发)
+ * @example TIM_ITRxExternalClockConfig(TIM2, TIM_TS_ITR0); // TIM2使用TIM1的触发作为时钟
+ */
 void TIM_ITRxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);
+
+/**
+ * @brief 配置定时器使用TIx通道作为外部时钟源
+ * @param TIMx: 定时器外设指针
+ * @param TIM_TIxExternalCLKSource: TIx通道 (TIM_TIxExternalCLK1Source_TI1等)
+ * @param TIM_ICPolarity: 触发极性
+ * @param ICFilter: 输入滤波系数
+ * @example TIM_TIxExternalClockConfig(TIM3, TIM_TIxExternalCLK1Source_TI1, TIM_ICPolarity_Rising, 0);
+ */
 void TIM_TIxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_TIxExternalCLKSource,
                                 uint16_t TIM_ICPolarity, uint16_t ICFilter);
+
+/**
+ * @brief 配置定时器使用ETR引脚作为时钟模式1
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ExtTRGPrescaler: 外部触发预分频
+ * @param TIM_ExtTRGPolarity: 外部触发极性
+ * @param ExtTRGFilter: 外部触发滤波
+ * @note 模式1下ETR信号直接作为时钟输入
+ */
 void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                              uint16_t ExtTRGFilter);
+
+/**
+ * @brief 配置定时器使用ETR引脚作为时钟模式2
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ExtTRGPrescaler: 外部触发预分频
+ * @param TIM_ExtTRGPolarity: 外部触发极性
+ * @param ExtTRGFilter: 外部触发滤波
+ * @note 模式2下ETR信号通过触发控制器作为时钟输入
+ */
 void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, 
                              uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter);
+
+/**
+ * @brief 配置ETR引脚的基本参数(不改变时钟模式)
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ExtTRGPrescaler: 外部触发预分频
+ * @param TIM_ExtTRGPolarity: 外部触发极性
+ * @param ExtTRGFilter: 外部触发滤波
+ */
 void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                    uint16_t ExtTRGFilter);
+
+/**
+ * @brief 配置定时器的预分频器
+ * @param TIMx: 定时器外设指针
+ * @param Prescaler: 预分频值 (0~65535)
+ * @param TIM_PSCReloadMode: 重载模式 (TIM_PSCReloadMode_Immediate/TIM_PSCReloadMode_Update)
+ * @example TIM_PrescalerConfig(TIM2, 7200-1, TIM_PSCReloadMode_Immediate); // 立即更新分频值
+ */
 void TIM_PrescalerConfig(TIM_TypeDef* TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode);
+
+/**
+ * @brief 配置定时器的计数模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_CounterMode: 计数模式 (TIM_CounterMode_Up/TIM_CounterMode_Down等)
+ * @example TIM_CounterModeConfig(TIM3, TIM_CounterMode_Down); // 配置为向下计数
+ */
 void TIM_CounterModeConfig(TIM_TypeDef* TIMx, uint16_t TIM_CounterMode);
+
+/**
+ * @brief 选择定时器的输入触发源
+ * @param TIMx: 定时器外设指针
+ * @param TIM_InputTriggerSource: 触发源 (如TIM_TS_TI1FP1表示TI1的滤波信号)
+ * @example TIM_SelectInputTrigger(TIM2, TIM_TS_TI1FP1); // 选择TI1FP1作为输入触发
+ */
 void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);
+
+/**
+ * @brief 配置定时器的编码器接口模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_EncoderMode: 编码器模式 (TIM_EncoderMode_TI1/TIM_EncoderMode_TI2/TIM_EncoderMode_TI12)
+ * @param TIM_IC1Polarity/TIM_IC2Polarity: 通道1/2的极性
+ * @example 配置TIM3为编码器模式，同时使用TI1和TI2
+ * TIM_EncoderInterfaceConfig(TIM3, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
+ */
 void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint16_t TIM_EncoderMode,
                                 uint16_t TIM_IC1Polarity, uint16_t TIM_IC2Polarity);
+
+/**
+ * @brief 强制通道1的输出比较状态
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ForcedAction: 强制动作 (TIM_ForcedAction_Active/TIM_ForcedAction_InActive)
+ * @note 其他通道强制输出函数(TIM_ForcedOC2Config~TIM_ForcedOC4Config)用法相同
+ * @example TIM_ForcedOC1Config(TIM3, TIM_ForcedAction_Active); // 强制通道1输出高电平
+ */
 void TIM_ForcedOC1Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC2Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC3Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC4Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
+
+/**
+ * @brief 配置自动重装载寄存器(ARR)的预装载功能
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @note 使能后ARR值需等待更新事件才生效
+ * @example TIM_ARRPreloadConfig(TIM2, ENABLE); // 使能ARR预装载
+ */
 void TIM_ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 配置定时器的比较输出模式(COM)
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @note 用于高级定时器的互补输出控制
+ */
 void TIM_SelectCOM(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 配置捕获比较DMA(CCDMA)功能
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ */
 void TIM_SelectCCDMA(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 控制捕获比较寄存器(CCR)的预装载
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ */
 void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 配置通道1的输出比较预装载功能
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OCPreload: 预装载模式 (TIM_OCPreload_Enable/TIM_OCPreload_Disable)
+ * @note 其他通道预装载函数(TIM_OC2PreloadConfig~TIM_OC4PreloadConfig)用法相同
+ * @example TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable); // 使能通道1预装载
+ */
 void TIM_OC1PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC2PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC3PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC4PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
+
+/**
+ * @brief 配置通道1的快速输出模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OCFast: 快速模式 (TIM_OCFast_Enable/TIM_OCFast_Disable)
+ * @note 其他通道快速模式函数(TIM_OC2FastConfig~TIM_OC4FastConfig)用法相同
+ */
 void TIM_OC1FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC2FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC3FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC4FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
+
+/**
+ * @brief 清除通道1的比较输出参考信号
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OCClear: 清除模式 (TIM_OCClear_Enable/TIM_OCClear_Disable)
+ * @note 其他通道清除函数(TIM_ClearOC2Ref~TIM_ClearOC4Ref)用法相同
+ */
 void TIM_ClearOC1Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC2Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC3Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC4Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
+
+/**
+ * @brief 配置通道1的输出极性
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OCPolarity: 极性 (TIM_OCPolarity_High/TIM_OCPolarity_Low)
+ * @note TIM_OC1NPolarityConfig用于配置互补输出极性(仅高级定时器)
+ *       其他通道极性配置函数用法相同
+ * @example TIM_OC1PolarityConfig(TIM3, TIM_OCPolarity_Low); // 通道1输出低电平有效
+ */
 void TIM_OC1PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
 void TIM_OC1NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC2PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
@@ -1112,36 +1408,189 @@ void TIM_OC2NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC3PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
 void TIM_OC3NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC4PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
+
+/**
+ * @brief 使能或禁用通道的输出比较功能
+ * @param TIMx: 定时器外设指针
+ * @param TIM_Channel: 通道号 (TIM_Channel_1~4)
+ * @param TIM_CCx: 使能状态 (TIM_CCx_Enable/TIM_CCx_Disable)
+ * @note TIM_CCxNCmd用于控制互补输出(仅高级定时器)
+ * @example TIM_CCxCmd(TIM3, TIM_Channel_1, TIM_CCx_Enable); // 使能通道1输出
+ */
 void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx);
 void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN);
+
+/**
+ * @brief 选择通道的输出比较模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_Channel: 通道号 (TIM_Channel_1~4)
+ * @param TIM_OCMode: 输出比较模式 (PWM1/PWM2/等)
+ * @example TIM_SelectOCxM(TIM3, TIM_Channel_1, TIM_OCMode_PWM2); // 切换为PWM2模式
+ */
 void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode);
+
+/**
+ * @brief 使能或禁用更新事件
+ * @param TIMx: 定时器外设指针
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example TIM_UpdateDisableConfig(TIM2, ENABLE); // 禁用更新事件
+ */
 void TIM_UpdateDisableConfig(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 配置更新请求的源
+ * @param TIMx: 定时器外设指针
+ * @param TIM_UpdateSource: 更新源 (TIM_UpdateSource_Global/TIM_UpdateSource_Regular)
+ */
 void TIM_UpdateRequestConfig(TIM_TypeDef* TIMx, uint16_t TIM_UpdateSource);
+
+/**
+ * @brief 使能或禁用霍尔传感器接口
+ * @param TIMx: 定时器外设指针 (通常为TIM1/TIM8)
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example TIM_SelectHallSensor(TIM1, ENABLE); // 使能TIM1的霍尔传感器接口
+ */
 void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState);
+
+/**
+ * @brief 选择单脉冲模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_OPMode: 单脉冲模式 (TIM_OPMode_Single/TIM_OPMode_Repetitive)
+ * @example TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Single); // 配置为单脉冲模式
+ */
 void TIM_SelectOnePulseMode(TIM_TypeDef* TIMx, uint16_t TIM_OPMode);
+
+/**
+ * @brief 选择定时器的输出触发源
+ * @param TIMx: 定时器外设指针
+ * @param TIM_TRGOSource: 触发输出源 (如TIM_TRGOSource_Update)
+ * @example TIM_SelectOutputTrigger(TIM2, TIM_TRGOSource_Update); // 以更新事件作为触发输出
+ */
 void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_TRGOSource);
+
+/**
+ * @brief 选择定时器的从模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_SlaveMode: 从模式 (TIM_SlaveMode_Reset/TIM_SlaveMode_Gated等)
+ * @example TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset); // 触发时重置计数器
+ */
 void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode);
+
+/**
+ * @brief 选择主从模式
+ * @param TIMx: 定时器外设指针
+ * @param TIM_MasterSlaveMode: 主从模式 (TIM_MasterSlaveMode_Enable/TIM_MasterSlaveMode_Disable)
+ * @example TIM_SelectMasterSlaveMode(TIM2, TIM_MasterSlaveMode_Enable); // 使能主从模式
+ */
 void TIM_SelectMasterSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_MasterSlaveMode);
+
+/**
+ * @brief 设置定时器计数器的值
+ * @param TIMx: 定时器外设指针
+ * @param Counter: 要设置的计数值
+ * @example TIM_SetCounter(TIM2, 0); // 将TIM2计数器重置为0
+ */
 void TIM_SetCounter(TIM_TypeDef* TIMx, uint16_t Counter);
+
+/**
+ * @brief 设置自动重装载寄存器(ARR)的值
+ * @param TIMx: 定时器外设指针
+ * @param Autoreload: 自动重装载值
+ * @example TIM_SetAutoreload(TIM2, 999); // 设置ARR为999
+ */
 void TIM_SetAutoreload(TIM_TypeDef* TIMx, uint16_t Autoreload);
+
+/**
+ * @brief 设置通道1的比较寄存器(CCR)值
+ * @param TIMx: 定时器外设指针
+ * @param Compare1: 比较值
+ * @note 其他通道比较值设置函数(TIM_SetCompare2~TIM_SetCompare4)用法相同
+ * @example TIM_SetCompare1(TIM3, 500); // 设置通道1的比较值为500
+ */
 void TIM_SetCompare1(TIM_TypeDef* TIMx, uint16_t Compare1);
 void TIM_SetCompare2(TIM_TypeDef* TIMx, uint16_t Compare2);
 void TIM_SetCompare3(TIM_TypeDef* TIMx, uint16_t Compare3);
 void TIM_SetCompare4(TIM_TypeDef* TIMx, uint16_t Compare4);
+
+/**
+ * @brief 设置通道1的输入捕获预分频
+ * @param TIMx: 定时器外设指针
+ * @param TIM_ICPSC: 预分频值 (TIM_ICPSC_DIV1/2/4/8)
+ * @note 其他通道捕获预分频设置函数用法相同
+ * @example TIM_SetIC1Prescaler(TIM5, TIM_ICPSC_DIV2); // 每2个事件捕获一次
+ */
 void TIM_SetIC1Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
 void TIM_SetIC2Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
 void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
 void TIM_SetIC4Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
+
+/**
+ * @brief 设置定时器的时钟分频
+ * @param TIMx: 定时器外设指针
+ * @param TIM_CKD: 时钟分频 (TIM_CKD_DIV1/2/4)
+ * @example TIM_SetClockDivision(TIM2, TIM_CKD_DIV2); // 时钟分频为2
+ */
 void TIM_SetClockDivision(TIM_TypeDef* TIMx, uint16_t TIM_CKD);
+
+/**
+ * @brief 获取通道1的捕获值
+ * @param TIMx: 定时器外设指针
+ * @return 捕获寄存器(CCR)的值
+ * @note 其他通道捕获值获取函数(TIM_GetCapture2~TIM_GetCapture4)用法相同
+ * @example uint16_t capture_val = TIM_GetCapture1(TIM5); // 读取通道1的捕获值
+ */
 uint16_t TIM_GetCapture1(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture2(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture3(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture4(TIM_TypeDef* TIMx);
+
+/**
+ * @brief 获取当前计数器的值
+ * @param TIMx: 定时器外设指针
+ * @return 计数器当前值
+ * @example uint16_t cnt = TIM_GetCounter(TIM2); // 读取TIM2的当前计数值
+ */
 uint16_t TIM_GetCounter(TIM_TypeDef* TIMx);
+
+/**
+ * @brief 获取当前预分频器的值
+ * @param TIMx: 定时器外设指针
+ * @return 预分频值
+ */
 uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx);
+
+/**
+ * @brief 检查指定的标志位是否置位
+ * @param TIMx: 定时器外设指针
+ * @param TIM_FLAG: 标志位 (TIM_FLAG_Update/TIM_FLAG_CC1等)
+ * @return 标志状态 (SET/RESET)
+ * @example if(TIM_GetFlagStatus(TIM2, TIM_FLAG_Update) == SET) { ... }
+ */
 FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG);
+
+/**
+ * @brief 清除指定的标志位
+ * @param TIMx: 定时器外设指针
+ * @param TIM_FLAG: 标志位 (TIM_FLAG_Update/TIM_FLAG_CC1等)
+ * @example TIM_ClearFlag(TIM2, TIM_FLAG_Update); // 清除更新标志
+ */
 void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG);
+
+/**
+ * @brief 检查指定的中断是否发生
+ * @param TIMx: 定时器外设指针
+ * @param TIM_IT: 中断类型 (TIM_IT_Update/TIM_IT_CC1等)
+ * @return 中断状态 (SET/RESET)
+ * @example if(TIM_GetITStatus(TIM2, TIM_IT_Update) == SET) { ... }
+ */
 ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT);
+
+/**
+ * @brief 清除指定的中断挂起位
+ * @param TIMx: 定时器外设指针
+ * @param TIM_IT: 中断类型 (TIM_IT_Update/TIM_IT_CC1等)
+ * @example TIM_ClearITPendingBit(TIM2, TIM_IT_Update); // 清除更新中断挂起位
+ */
 void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT);
 
 #ifdef __cplusplus

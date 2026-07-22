@@ -1,24 +1,20 @@
 /**
   ******************************************************************************
   * @file    stm32f10x_rcc.h
-  * @author  MCD Application Team
+  * @author  MCD应用团队
   * @version V3.5.0
-  * @date    11-March-2011
-  * @brief   This file contains all the functions prototypes for the RCC firmware 
-  *          library.
+  * @date    2011年3月11日
+  * @brief   本文件包含RCC固件库的所有函数原型。
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * 本固件仅作指导用途，旨在为客户提供与其产品相关的编码信息，以节省客户时间。
+  * 因此，对于因本固件内容和/或客户使用本文件所含编码信息而导致的任何直接、间接或后果性损害索赔，
+  * 意法半导体不承担任何责任。
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * <h2><center>&copy; 2011年意法半导体版权所有</center></h2>
   ******************************************************************************
-  */
+ */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F10x_RCC_H
@@ -684,27 +680,228 @@ void RCC_ADCCLKConfig(uint32_t RCC_PCLK2);
  void RCC_I2S3CLKConfig(uint32_t RCC_I2S3CLKSource);
 #endif /* STM32F10X_CL */ 
 
+/**
+  * @brief  配置低速外部时钟（LSE）
+  * @param  RCC_LSE : LSE 工作模式选择
+  *         可选值:
+  *           RCC_LSE_OFF       (关闭 LSE)
+  *           RCC_LSE_ON        (启用 LSE)
+  *           RCC_LSE_Bypass    (旁路模式，使用外部时钟源)
+  * @note   用于驱动 RTC 和/或独立看门狗
+  * @retval 无
+  */
 void RCC_LSEConfig(uint8_t RCC_LSE);
+
+/**
+  * @brief  使能或禁用低速内部时钟（LSI）
+  * @param  NewState : LSI 状态
+  *         可选值: ENABLE (启动 LSI) / DISABLE (关闭 LSI)
+  * @note   LSI 用于驱动独立看门狗和 RTC
+  *         启动后需等待稳定（约 128 μs）
+  * @retval 无
+  */
 void RCC_LSICmd(FunctionalState NewState);
+
+/**
+  * @brief  选择 RTC 时钟源
+  * @param  RCC_RTCCLKSource : RTC 时钟源选择
+  *         可选值:
+  *           RCC_RTCCLKSource_LSE   (外部低速晶振)
+  *           RCC_RTCCLKSource_LSI   (内部低速 RC)
+  *           RCC_RTCCLKSource_HSE_DivX (HSE 分频，X 取决于具体型号)
+  * @note   必须在 RTC 禁用状态下配置
+  * @retval 无
+  */
 void RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource);
+
+/**
+  * @brief  使能或禁用 RTC 时钟
+  * @param  NewState : RTC 时钟状态
+  *         可选值: ENABLE (使能) / DISABLE (禁用)
+  * @note   使能后无法更改时钟源
+  *         需先通过 RCC_RTCCLKConfig() 配置时钟源
+  * @retval 无
+  */
 void RCC_RTCCLKCmd(FunctionalState NewState);
+
+/**
+  * @brief  获取系统时钟频率
+  * @param  RCC_Clocks : 存储时钟频率的结构体指针
+  *         结构体包含:
+  *           SYSCLK_Frequency  (系统时钟频率)
+  *           HCLK_Frequency    (AHB 总线时钟频率)
+  *           PCLK1_Frequency   (APB1 总线时钟频率)
+  *           PCLK2_Frequency   (APB2 总线时钟频率)
+  *           ADCCLK_Frequency  (ADC 时钟频率，部分型号)
+  * @retval 无
+  */
 void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks);
+
+/**
+  * @brief  使能或禁用 AHB 外设时钟
+  * @param  RCC_AHBPeriph : 选择 AHB 外设
+  *         (可组合使用 | 操作符选择多个外设)
+  *         常见值:
+  *           RCC_AHBPeriph_DMA1
+  *           RCC_AHBPeriph_DMA2
+  *           RCC_AHBPeriph_SRAM
+  *           RCC_AHBPeriph_FLITF
+  *           RCC_AHBPeriph_CRC
+  *           RCC_AHBPeriph_FSMC (部分型号)
+  *           RCC_AHBPeriph_SDIO (部分型号)
+  * @param  NewState : 时钟状态 (ENABLE/DISABLE)
+  * @retval 无
+  */
 void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
+
+/**
+  * @brief  使能或禁用 APB2 外设时钟
+  * @param  RCC_APB2Periph : 选择 APB2 外设
+  *         (可组合使用 | 操作符选择多个外设)
+  *         常见值:
+  *           RCC_APB2Periph_AFIO
+  *           RCC_APB2Periph_GPIOA-GPIOG
+  *           RCC_APB2Periph_ADC1
+  *           RCC_APB2Periph_ADC2
+  *           RCC_APB2Periph_TIM1
+  *           RCC_APB2Periph_SPI1
+  *           RCC_APB2Periph_USART1
+  * @param  NewState : 时钟状态 (ENABLE/DISABLE)
+  * @retval 无
+  */
 void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
+
+/**
+  * @brief  使能或禁用 APB1 外设时钟
+  * @param  RCC_APB1Periph : 选择 APB1 外设
+  *         (可组合使用 | 操作符选择多个外设)
+  *         常见值:
+  *           RCC_APB1Periph_TIM2-TIM7
+  *           RCC_APB1Periph_WWDG
+  *           RCC_APB1Periph_SPI2
+  *           RCC_APB1Periph_USART2-USART5
+  *           RCC_APB1Periph_I2C1-I2C2
+  *           RCC_APB1Periph_USB
+  *           RCC_APB1Periph_CAN
+  *           RCC_APB1Periph_BKP
+  *           RCC_APB1Periph_PWR
+  *           RCC_APB1Periph_DAC
+  * @param  NewState : 时钟状态 (ENABLE/DISABLE)
+  * @note   APB1 最大时钟频率通常低于 APB2（例如 36MHz vs 72MHz）
+  * @retval 无
+  */
 void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+
+
+
+
+
 
 #ifdef STM32F10X_CL
 void RCC_AHBPeriphResetCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);
 #endif /* STM32F10X_CL */ 
 
+/**
+  * @brief  控制 APB2 外设复位（高级外设总线 2）
+  * @param  RCC_APB2Periph : 选择要复位的 APB2 外设
+  *         (可组合使用 | 操作符选择多个外设)
+  *         例如: RCC_APB2Periph_USART1 | RCC_APB2Periph_SPI1
+  * @param  NewState : 外设复位状态
+  *         可选值: ENABLE (复位外设) / DISABLE (释放复位)
+  * @retval 无
+  */
 void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);
+
+/**
+  * @brief  控制 APB1 外设复位（高级外设总线 1）
+  * @param  RCC_APB1Periph : 选择要复位的 APB1 外设
+  *         (可组合使用 | 操作符选择多个外设)
+  *         例如: RCC_APB1Periph_USART2 | RCC_APB1Periph_TIM2
+  * @param  NewState : 外设复位状态
+  *         可选值: ENABLE (复位外设) / DISABLE (释放复位)
+  * @retval 无
+  */
 void RCC_APB1PeriphResetCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);
+
+/**
+  * @brief  控制备份域复位（包括 RTC 和备份寄存器）
+  * @param  NewState : 备份域复位状态
+  *         可选值: ENABLE (触发备份域复位) / DISABLE (无操作)
+  * @note   复位后备份域处于保护状态，需先使能访问权限
+  * @retval 无
+  */
 void RCC_BackupResetCmd(FunctionalState NewState);
+
+/**
+  * @brief  使能或禁用时钟安全系统（CSS）
+  * @param  NewState : CSS 功能状态
+  *         可选值: ENABLE (启用时钟监控) / DISABLE (关闭监控)
+  * @note   当外部时钟失效时，CSS 会触发 NMI 中断和系统复位
+  * @retval 无
+  */
 void RCC_ClockSecuritySystemCmd(FunctionalState NewState);
+
+/**
+  * @brief  配置微控制器时钟输出（MCO）
+  * @param  RCC_MCO : 选择输出到 MCO 引脚的时钟源
+  *         可选值:
+  *           RCC_MCO_NoClock    (无输出)
+  *           RCC_MCO_SYSCLK     (系统时钟)
+  *           RCC_MCO_HSI        (内部高速时钟)
+  *           RCC_MCO_HSE        (外部高速时钟)
+  *           RCC_MCO_PLLCLK     (PLL 输出时钟)
+  * @note   需在外部引脚配置为复用功能模式下使用
+  * @retval 无
+  */
 void RCC_MCOConfig(uint8_t RCC_MCO);
+
+/**
+  * @brief  检查指定的 RCC 标志位状态
+  * @param  RCC_FLAG : 要检查的标志位
+  *         可选值:
+  *           RCC_FLAG_HSIRDY   (HSI 时钟就绪)
+  *           RCC_FLAG_HSERDY   (HSE 时钟就绪)
+  *           RCC_FLAG_PLLRDY   (PLL 就绪)
+  *           RCC_FLAG_LSERDY   (LSE 时钟就绪)
+  *           RCC_FLAG_LSIRDY   (LSI 时钟就绪)
+  *           RCC_FLAG_BORRST   (欠压复位标志)
+  *           RCC_FLAG_PINRST   (引脚复位标志)
+  *           RCC_FLAG_PORRST   (上电复位标志)
+  *           RCC_FLAG_SFTRST   (软件复位标志)
+  *           RCC_FLAG_IWDGRST  (独立看门狗复位标志)
+  *           RCC_FLAG_WWDGRST  (窗口看门狗复位标志)
+  *           RCC_FLAG_LPWRRST  (低功耗复位标志)
+  * @retval FlagStatus : 标志位状态 (SET 或 RESET)
+  */
 FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
+
+/**
+  * @brief  清除所有 RCC 复位标志
+  * @note   用于清除电源控制/状态寄存器(PWR_CSR)中的复位标志位
+  * @retval 无
+  */
 void RCC_ClearFlag(void);
+
+/**
+  * @brief  检查指定的 RCC 中断是否发生
+  * @param  RCC_IT : 要检查的中断源
+  *         可选值:
+  *           RCC_IT_LSIRDY    (LSI 就绪中断)
+  *           RCC_IT_LSERDY    (LSE 就绪中断)
+  *           RCC_IT_HSIRDY    (HSI 就绪中断)
+  *           RCC_IT_HSERDY    (HSE 就绪中断)
+  *           RCC_IT_PLLRDY    (PLL 就绪中断)
+  *           RCC_IT_CSS       (时钟安全系统中断)
+  * @retval ITStatus : 中断状态 (SET 表示中断发生，RESET 表示未发生)
+  */
 ITStatus RCC_GetITStatus(uint8_t RCC_IT);
+
+/**
+  * @brief  清除 RCC 的中断挂起位
+  * @param  RCC_IT : 要清除的中断源
+  *         可选值: @ref RCC_GetITStatus 中的中断源
+  * @retval 无
+  */
 void RCC_ClearITPendingBit(uint8_t RCC_IT);
 
 #ifdef __cplusplus

@@ -49,53 +49,50 @@
 
 typedef struct
 {
-  uint8_t NVIC_IRQChannel;                    /*!< Specifies the IRQ channel to be enabled or disabled.
-                                                   This parameter can be a value of @ref IRQn_Type 
-                                                   (For the complete STM32 Devices IRQ Channels list, please
-                                                    refer to stm32f10x.h file) */
+  uint8_t NVIC_IRQChannel;                    /*!< 指定要使能或禁用的IRQ通道。
+                                                   该参数可以是@ref IRQn_Type中的一个值
+                                                   （有关完整的STM32设备IRQ通道列表，请
+                                                    参考stm32f10x.h文件）*/
 
-  uint8_t NVIC_IRQChannelPreemptionPriority;  /*!< Specifies the pre-emption priority for the IRQ channel
-                                                   specified in NVIC_IRQChannel. This parameter can be a value
-                                                   between 0 and 15 as described in the table @ref NVIC_Priority_Table */
+  uint8_t NVIC_IRQChannelPreemptionPriority;  /*!< 指定在 NVIC_IRQChannel 中设定的 IRQ 通道的抢占优先级。
+																									 该参数可以是 0 到 15 之间的一个值，具体说明请参见 
+																									 @ref NVIC_Priority_Table 表格 */
 
-  uint8_t NVIC_IRQChannelSubPriority;         /*!< Specifies the subpriority level for the IRQ channel specified
-                                                   in NVIC_IRQChannel. This parameter can be a value
-                                                   between 0 and 15 as described in the table @ref NVIC_Priority_Table */
+  uint8_t NVIC_IRQChannelSubPriority;         /*!< 指定在 NVIC_IRQChannel 中设定的 IRQ 通道的子优先级等级。
+																									 该参数可以是 0 到 15 之间的一个值，
+																									 具体说明请参见 @ref NVIC_Priority_Table 表格 */
 
-  FunctionalState NVIC_IRQChannelCmd;         /*!< Specifies whether the IRQ channel defined in NVIC_IRQChannel
-                                                   will be enabled or disabled. 
-                                                   This parameter can be set either to ENABLE or DISABLE */   
+  FunctionalState NVIC_IRQChannelCmd;         /*!< 指定在 NVIC_IRQChannel 中定义的 IRQ 通道将被使能还是禁用。
+                                                   该参数可以设置为 ENABLE（使能）或 DISABLE（禁用）*/ 
 } NVIC_InitTypeDef;
  
 /**
   * @}
   */
 
-/** @defgroup NVIC_Priority_Table 
+/** @defgroup NVIC_优先级表 
   * @{
   */
-
 /**
 @code  
- The table below gives the allowed values of the pre-emption priority and subpriority according
- to the Priority Grouping configuration performed by NVIC_PriorityGroupConfig function
+ 下表给出了根据 NVIC_PriorityGroupConfig 函数所做的优先级分组配置，抢占优先级和子优先级的允许值
   ============================================================================================================================
-    NVIC_PriorityGroup   | NVIC_IRQChannelPreemptionPriority | NVIC_IRQChannelSubPriority  | Description
+    NVIC_优先级分组       | NVIC_IRQChannelPreemptionPriority（抢占优先级） | NVIC_IRQChannelSubPriority（子优先级） | 描述
   ============================================================================================================================
-   NVIC_PriorityGroup_0  |                0                  |            0-15             |   0 bits for pre-emption priority
-                         |                                   |                             |   4 bits for subpriority
+   NVIC_PriorityGroup_0  |                0                  |            0-15             |   0位用于抢占优先级
+                         |                                   |                             |   4位用于子优先级
   ----------------------------------------------------------------------------------------------------------------------------
-   NVIC_PriorityGroup_1  |                0-1                |            0-7              |   1 bits for pre-emption priority
-                         |                                   |                             |   3 bits for subpriority
+   NVIC_PriorityGroup_1  |                0-1                |            0-7              |   1位用于抢占优先级
+                         |                                   |                             |   3位用于子优先级
   ----------------------------------------------------------------------------------------------------------------------------    
-   NVIC_PriorityGroup_2  |                0-3                |            0-3              |   2 bits for pre-emption priority
-                         |                                   |                             |   2 bits for subpriority
+   NVIC_PriorityGroup_2  |                0-3                |            0-3              |   2位用于抢占优先级
+                         |                                   |                             |   2位用于子优先级
   ----------------------------------------------------------------------------------------------------------------------------    
-   NVIC_PriorityGroup_3  |                0-7                |            0-1              |   3 bits for pre-emption priority
-                         |                                   |                             |   1 bits for subpriority
+   NVIC_PriorityGroup_3  |                0-7                |            0-1              |   3位用于抢占优先级
+                         |                                   |                             |   1位用于子优先级
   ----------------------------------------------------------------------------------------------------------------------------    
-   NVIC_PriorityGroup_4  |                0-15               |            0                |   4 bits for pre-emption priority
-                         |                                   |                             |   0 bits for subpriority                       
+   NVIC_PriorityGroup_4  |                0-15               |            0                |   4位用于抢占优先级
+                         |                                   |                             |   0位用于子优先级                       
   ============================================================================================================================
 @endcode
 */

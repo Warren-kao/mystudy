@@ -263,8 +263,7 @@ void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseIn
     TIMx->RCR = TIM_TimeBaseInitStruct->TIM_RepetitionCounter;
   }
 
-  /* Generate an update event to reload the Prescaler and the Repetition counter
-     values immediately */
+  /* 生成一个更新事件，以立即重新加载预分频器和重复计数器的值 */
   TIMx->EGR = TIM_PSCReloadMode_Immediate;           
 }
 
@@ -846,29 +845,29 @@ void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified TIM interrupts.
-  * @param  TIMx: where x can be 1 to 17 to select the TIMx peripheral.
-  * @param  TIM_IT: specifies the TIM interrupts sources to be enabled or disabled.
-  *   This parameter can be any combination of the following values:
-  *     @arg TIM_IT_Update: TIM update Interrupt source
-  *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
-  *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
-  *     @arg TIM_IT_CC3: TIM Capture Compare 3 Interrupt source
-  *     @arg TIM_IT_CC4: TIM Capture Compare 4 Interrupt source
-  *     @arg TIM_IT_COM: TIM Commutation Interrupt source
-  *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
-  *     @arg TIM_IT_Break: TIM Break Interrupt source
+  * @brief  使能或禁用指定的TIM中断。
+  * @param  TIMx: x可以是1到17，用于选择TIMx外设。
+  * @param  TIM_IT: 指定要使能或禁用的TIM中断源。
+  *   该参数可以是以下值的任意组合：
+  *     @arg TIM_IT_Update: TIM更新中断源
+  *     @arg TIM_IT_CC1: TIM捕获比较1中断源
+  *     @arg TIM_IT_CC2: TIM捕获比较2中断源
+  *     @arg TIM_IT_CC3: TIM捕获比较3中断源
+  *     @arg TIM_IT_CC4: TIM捕获比较4中断源
+  *     @arg TIM_IT_COM: TIM换向中断源
+  *     @arg TIM_IT_Trigger: TIM触发中断源
+  *     @arg TIM_IT_Break: TIM刹车中断源
   * @note 
-  *   - TIM6 and TIM7 can only generate an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.    
-  * @param  NewState: new state of the TIM interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @retval None
-  */
+  *   - TIM6和TIM7只能产生更新中断。
+  *   - TIM9、TIM12和TIM15只能拥有TIM_IT_Update、TIM_IT_CC1、
+  *     TIM_IT_CC2或TIM_IT_Trigger中断。
+  *   - TIM10、TIM11、TIM13、TIM14、TIM16和TIM17只能拥有TIM_IT_Update或TIM_IT_CC1中断。
+  *   - TIM_IT_Break仅用于TIM1、TIM8和TIM15。
+  *   - TIM_IT_COM仅用于TIM1、TIM8、TIM15、TIM16和TIM17。
+  * @param  NewState: TIM中断的新状态。
+  *   该参数可以是：ENABLE（使能）或DISABLE（禁用）。
+  * @retval 无
+  */	
 void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)
 {  
   /* Check the parameters */
@@ -1098,21 +1097,21 @@ void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, ui
 }
 
 /**
-  * @brief  Configures the External clock Mode2
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_ExtTRGPSC_OFF: ETRP Prescaler OFF.
-  *     @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
-  *     @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
-  *     @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
-  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
-  *     @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
-  * @param  ExtTRGFilter: External Trigger Filter.
-  *   This parameter must be a value between 0x00 and 0x0F
-  * @retval None
+  * @brief  配置外部时钟模式2
+  * @param  TIMx: x可以是1、2、3、4、5或8，用于选择TIM外设。
+  * @param  TIM_ExtTRGPrescaler: 外部触发预分频器。
+  *   该参数可以是以下值之一：
+  *     @arg TIM_ExtTRGPSC_OFF:  ETRP预分频器关闭
+  *     @arg TIM_ExtTRGPSC_DIV2: ETRP频率除以2
+  *     @arg TIM_ExtTRGPSC_DIV4: ETRP频率除以4
+  *     @arg TIM_ExtTRGPSC_DIV8: ETRP频率除以8
+  * @param  TIM_ExtTRGPolarity:  外部触发极性。
+  *   该参数可以是以下值之一：
+  *     @arg TIM_ExtTRGPolarity_Inverted: 低电平有效或下降沿有效
+  *     @arg TIM_ExtTRGPolarity_NonInverted: 高电平有效或上升沿有效
+  * @param  ExtTRGFilter: 外部触发滤波器。
+  *   该参数必须是0x00到0x0F之间的值
+  * @retval 无
   */
 void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, 
                              uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter)
@@ -1129,21 +1128,21 @@ void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler,
 }
 
 /**
-  * @brief  Configures the TIMx External Trigger (ETR).
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_ExtTRGPSC_OFF: ETRP Prescaler OFF.
-  *     @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
-  *     @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
-  *     @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
-  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
-  *     @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
-  * @param  ExtTRGFilter: External Trigger Filter.
-  *   This parameter must be a value between 0x00 and 0x0F
-  * @retval None
+  * @brief  配置TIMx的外部触发（ETR）。
+  * @param  TIMx: x可以是1、2、3、4、5或8，用于选择TIM外设。
+  * @param  TIM_ExtTRGPrescaler: 外部触发预分频器。
+  *   该参数可以是以下值之一：
+  *     @arg TIM_ExtTRGPSC_OFF: ETRP预分频器关闭
+  *     @arg TIM_ExtTRGPSC_DIV2: ETRP频率除以2
+  *     @arg TIM_ExtTRGPSC_DIV4: ETRP频率除以4
+  *     @arg TIM_ExtTRGPSC_DIV8: ETRP频率除以8
+  * @param  TIM_ExtTRGPolarity: 外部触发极性。
+  *   该参数可以是以下值之一：
+  *     @arg TIM_ExtTRGPolarity_Inverted: 低电平有效或下降沿有效
+  *     @arg TIM_ExtTRGPolarity_NonInverted: 高电平有效或上升沿有效
+  * @param  ExtTRGFilter: 外部触发滤波器。
+  *   该参数必须是0x00到0x0F之间的值
+  * @retval 无
   */
 void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                    uint16_t ExtTRGFilter)
@@ -2572,30 +2571,30 @@ FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 }
 
 /**
-  * @brief  Clears the TIMx's pending flags.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_FLAG: specifies the flag bit to clear.
-  *   This parameter can be any combination of the following values:
-  *     @arg TIM_FLAG_Update: TIM update Flag
-  *     @arg TIM_FLAG_CC1: TIM Capture Compare 1 Flag
-  *     @arg TIM_FLAG_CC2: TIM Capture Compare 2 Flag
-  *     @arg TIM_FLAG_CC3: TIM Capture Compare 3 Flag
-  *     @arg TIM_FLAG_CC4: TIM Capture Compare 4 Flag
-  *     @arg TIM_FLAG_COM: TIM Commutation Flag
-  *     @arg TIM_FLAG_Trigger: TIM Trigger Flag
-  *     @arg TIM_FLAG_Break: TIM Break Flag
-  *     @arg TIM_FLAG_CC1OF: TIM Capture Compare 1 overcapture Flag
-  *     @arg TIM_FLAG_CC2OF: TIM Capture Compare 2 overcapture Flag
-  *     @arg TIM_FLAG_CC3OF: TIM Capture Compare 3 overcapture Flag
-  *     @arg TIM_FLAG_CC4OF: TIM Capture Compare 4 overcapture Flag
+  * @brief  清除TIMx的挂起标志位。
+  * @param  TIMx: x可以是1到17，用于选择TIM外设。
+  * @param  TIM_FLAG: 指定要清除的标志位。
+  *   该参数可以是以下值的任意组合：
+  *     @arg TIM_FLAG_Update: TIM更新标志
+  *     @arg TIM_FLAG_CC1: TIM捕获比较1标志
+  *     @arg TIM_FLAG_CC2: TIM捕获比较2标志
+  *     @arg TIM_FLAG_CC3: TIM捕获比较3标志
+  *     @arg TIM_FLAG_CC4: TIM捕获比较4标志
+  *     @arg TIM_FLAG_COM: TIM换向标志
+  *     @arg TIM_FLAG_Trigger: TIM触发标志
+  *     @arg TIM_FLAG_Break: TIM刹车标志
+  *     @arg TIM_FLAG_CC1OF: TIM捕获比较1溢出标志
+  *     @arg TIM_FLAG_CC2OF: TIM捕获比较2溢出标志
+  *     @arg TIM_FLAG_CC3OF: TIM捕获比较3溢出标志
+  *     @arg TIM_FLAG_CC4OF: TIM捕获比较4溢出标志
   * @note
-  *   - TIM6 and TIM7 can have only one update flag. 
-  *   - TIM9, TIM12 and TIM15 can have only TIM_FLAG_Update, TIM_FLAG_CC1,
-  *      TIM_FLAG_CC2 or TIM_FLAG_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_FLAG_Update or TIM_FLAG_CC1.   
-  *   - TIM_FLAG_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_FLAG_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.   
-  * @retval None
+  *   - TIM6和TIM7只能有一个更新标志。
+  *   - TIM9、TIM12和TIM15只能有TIM_FLAG_Update、TIM_FLAG_CC1、
+  *     TIM_FLAG_CC2或TIM_FLAG_Trigger标志。
+  *   - TIM10、TIM11、TIM13、TIM14、TIM16和TIM17只能有TIM_FLAG_Update或TIM_FLAG_CC1标志。
+  *   - TIM_FLAG_Break仅用于TIM1、TIM8和TIM15。
+  *   - TIM_FLAG_COM仅用于TIM1、TIM8、TIM15、TIM16和TIM17。
+  * @retval 无
   */
 void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 {  
@@ -2608,26 +2607,26 @@ void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 }
 
 /**
-  * @brief  Checks whether the TIM interrupt has occurred or not.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_IT: specifies the TIM interrupt source to check.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_IT_Update: TIM update Interrupt source
-  *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
-  *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
-  *     @arg TIM_IT_CC3: TIM Capture Compare 3 Interrupt source
-  *     @arg TIM_IT_CC4: TIM Capture Compare 4 Interrupt source
-  *     @arg TIM_IT_COM: TIM Commutation Interrupt source
-  *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
-  *     @arg TIM_IT_Break: TIM Break Interrupt source
+  * @brief  检查TIM中断是否已发生。
+  * @param  TIMx: x可以是1到17，用于选择TIM外设。
+  * @param  TIM_IT: 指定要检查的TIM中断源。
+  *   该参数可以是以下值之一：
+  *     @arg TIM_IT_Update: TIM更新中断源
+  *     @arg TIM_IT_CC1: TIM捕获比较1中断源
+  *     @arg TIM_IT_CC2: TIM捕获比较2中断源
+  *     @arg TIM_IT_CC3: TIM捕获比较3中断源
+  *     @arg TIM_IT_CC4: TIM捕获比较4中断源
+  *     @arg TIM_IT_COM: TIM换向中断源
+  *     @arg TIM_IT_Trigger: TIM触发中断源
+  *     @arg TIM_IT_Break: TIM刹车中断源
   * @note
-  *   - TIM6 and TIM7 can generate only an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.  
-  * @retval The new state of the TIM_IT(SET or RESET).
+  *   - TIM6和TIM7只能产生更新中断。
+  *   - TIM9、TIM12和TIM15只能拥有TIM_IT_Update、TIM_IT_CC1、
+  *     TIM_IT_CC2或TIM_IT_Trigger中断。
+  *   - TIM10、TIM11、TIM13、TIM14、TIM16和TIM17只能拥有TIM_IT_Update或TIM_IT_CC1中断。
+  *   - TIM_IT_Break仅用于TIM1、TIM8和TIM15。
+  *   - TIM_IT_COM仅用于TIM1、TIM8、TIM15、TIM16和TIM17。
+  * @retval TIM_IT的新状态（SET或RESET）。
   */
 ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 {
@@ -2652,26 +2651,26 @@ ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 }
 
 /**
-  * @brief  Clears the TIMx's interrupt pending bits.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_IT: specifies the pending bit to clear.
-  *   This parameter can be any combination of the following values:
-  *     @arg TIM_IT_Update: TIM1 update Interrupt source
-  *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
-  *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
-  *     @arg TIM_IT_CC3: TIM Capture Compare 3 Interrupt source
-  *     @arg TIM_IT_CC4: TIM Capture Compare 4 Interrupt source
-  *     @arg TIM_IT_COM: TIM Commutation Interrupt source
-  *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
-  *     @arg TIM_IT_Break: TIM Break Interrupt source
+  * @brief  清除TIMx的中断挂起位。
+  * @param  TIMx: x可以是1到17，用于选择TIM外设。
+  * @param  TIM_IT: 指定要清除的挂起位。
+  *   该参数可以是以下值的任意组合：
+  *     @arg TIM_IT_Update: TIM更新中断源
+  *     @arg TIM_IT_CC1: TIM捕获比较1中断源
+  *     @arg TIM_IT_CC2: TIM捕获比较2中断源
+  *     @arg TIM_IT_CC3: TIM捕获比较3中断源
+  *     @arg TIM_IT_CC4: TIM捕获比较4中断源
+  *     @arg TIM_IT_COM: TIM换向中断源
+  *     @arg TIM_IT_Trigger: TIM触发中断源
+  *     @arg TIM_IT_Break: TIM刹车中断源
   * @note
-  *   - TIM6 and TIM7 can generate only an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.    
-  * @retval None
+  *   - TIM6和TIM7只能产生更新中断。
+  *   - TIM9、TIM12和TIM15只能拥有TIM_IT_Update、TIM_IT_CC1、
+  *     TIM_IT_CC2或TIM_IT_Trigger中断。
+  *   - TIM10、TIM11、TIM13、TIM14、TIM16和TIM17只能拥有TIM_IT_Update或TIM_IT_CC1中断。
+  *   - TIM_IT_Break仅用于TIM1、TIM8和TIM15。
+  *   - TIM_IT_COM仅用于TIM1、TIM8、TIM15、TIM16和TIM17。
+  * @retval 无
   */
 void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 {

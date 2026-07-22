@@ -1,21 +1,18 @@
 /**
   ******************************************************************************
   * @file    system_stm32f10x.h
-  * @author  MCD Application Team
+  * @author  MCD 应用团队
   * @version V3.5.0
-  * @date    11-March-2011
-  * @brief   CMSIS Cortex-M3 Device Peripheral Access Layer System Header File.
+  * @date    2011年3月11日
+  * @brief   CMSIS Cortex-M3 设备外设访问层系统头文件。
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * 本固件仅作指导用途，旨在为客户提供与其产品相关的编码信息，以节省客户时间。
+  * 因此，对于因本固件内容及/或客户使用本文件中包含的编码信息所引发的任何索赔，
+  * 意法半导体不承担任何直接、间接或 CONSEQUENTIAL（间接）损害责任。
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * <h2><center>&copy; 版权所有 2011 意法半导体</center></h2>
   ******************************************************************************
   */
 

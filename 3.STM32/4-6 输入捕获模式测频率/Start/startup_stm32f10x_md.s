@@ -1,33 +1,28 @@
-;******************** (C) COPYRIGHT 2011 STMicroelectronics ********************
-;* File Name          : startup_stm32f10x_md.s
-;* Author             : MCD Application Team
-;* Version            : V3.5.0
-;* Date               : 11-March-2011
-;* Description        : STM32F10x Medium Density Devices vector table for MDK-ARM 
-;*                      toolchain.  
-;*                      This module performs:
-;*                      - Set the initial SP
-;*                      - Set the initial PC == Reset_Handler
-;*                      - Set the vector table entries with the exceptions ISR address
-;*                      - Configure the clock system
-;*                      - Branches to __main in the C library (which eventually
-;*                        calls main()).
-;*                      After Reset the CortexM3 processor is in Thread mode,
-;*                      priority is Privileged, and the Stack is set to Main.
-;* <<< Use Configuration Wizard in Context Menu >>>   
+;******************** (C) 版权所有 2011 意法半导体 ********************
+;* 文件名           : startup_stm32f10x_md.s
+;* 作者             : MCD 应用团队
+;* 版本             : V3.5.0
+;* 日期             : 2011年3月11日
+;* 描述             : 适用于MDK-ARM工具链的STM32F10x中等容量器件向量表。
+;*                   本模块实现以下功能：
+;*                   - 设置初始栈指针（SP）
+;*                   - 设置初始程序计数器（PC）等于复位处理函数（Reset_Handler）
+;*                   - 用异常中断服务程序（ISR）地址设置向量表项
+;*                   - 配置时钟系统
+;*                   - 跳转到C库中的__main函数（最终会调用main()函数）
+;*                   复位后，Cortex-M3处理器处于线程模式，
+;*                   优先级为特权级，栈设置为主栈。
+;* <<< 在上下文菜单中使用配置向导 >>>
 ;*******************************************************************************
-; THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-; WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
-; AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
-; INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
-; CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
-; INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+; 本固件仅作指导用途，旨在为客户提供与其产品相关的编码信息，以节省客户时间。
+; 因此，对于因本固件内容及/或客户使用本文件中包含的编码信息所引发的任何索赔，
+; 意法半导体不承担任何直接、间接或后果性损害责任。
 ;*******************************************************************************
 
-; Amount of memory (in bytes) allocated for Stack
-; Tailor this value to your application needs
-; <h> Stack Configuration
-;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+; 为栈分配的内存大小（以字节为单位）
+; 根据应用需求调整此值
+; <h> 栈配置
+;   <o> 栈大小（字节） <0x0-0xFFFFFFFF:8>
 ; </h>
 
 Stack_Size      EQU     0x00000400

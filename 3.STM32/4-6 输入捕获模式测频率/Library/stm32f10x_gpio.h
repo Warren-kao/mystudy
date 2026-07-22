@@ -1,22 +1,18 @@
 /**
   ******************************************************************************
   * @file    stm32f10x_gpio.h
-  * @author  MCD Application Team
+  * @author  MCD应用团队
   * @version V3.5.0
-  * @date    11-March-2011
-  * @brief   This file contains all the functions prototypes for the GPIO 
-  *          firmware library.
+  * @date    2011年3月11日
+  * @brief   本文件包含GPIO固件库的所有函数原型。
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * 本固件仅作指导用途，旨在为客户提供与其产品相关的编程信息，以节省客户时间。
+  * 因此，对于因本固件内容及/或客户使用本文件所包含的编程信息而导致的任何直接、
+  * 间接或后果性损害，意法半导体不承担任何责任。
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * <h2><center>&copy; 版权所有 2011 意法半导体</center></h2>
   ******************************************************************************
   */
 
@@ -90,14 +86,14 @@ typedef enum
 
 typedef struct
 {
-  uint16_t GPIO_Pin;             /*!< Specifies the GPIO pins to be configured.
-                                      This parameter can be any value of @ref GPIO_pins_define */
+  uint16_t GPIO_Pin;             /*!< 指定要配置的GPIO引脚。
+                                      此参数可以是@ref GPIO_pins_define中的任意值 */
 
-  GPIOSpeed_TypeDef GPIO_Speed;  /*!< Specifies the speed for the selected pins.
-                                      This parameter can be a value of @ref GPIOSpeed_TypeDef */
+  GPIOSpeed_TypeDef GPIO_Speed;  /*!< 指定所选引脚的速度。
+                                      此参数可以是@ref GPIOSpeed_TypeDef中的一个值 */
 
-  GPIOMode_TypeDef GPIO_Mode;    /*!< Specifies the operating mode for the selected pins.
-                                      This parameter can be a value of @ref GPIOMode_TypeDef */
+  GPIOMode_TypeDef GPIO_Mode;    /*!< 指定所选引脚的工作模式。
+                                      此参数可以是@ref GPIOMode_TypeDef中的一个值 */
 }GPIO_InitTypeDef;
 
 
@@ -346,23 +342,162 @@ typedef enum
   * @{
   */
 
+/**
+ * @brief 将指定GPIO端口恢复到默认复位状态
+ * @param GPIOx: GPIO端口指针 (GPIOA~GPIOG，取决于芯片型号)
+ * @note 复位后所有引脚配置恢复为浮空输入状态
+ * @example GPIO_DeInit(GPIOA); // 复位GPIOA端口所有配置
+ */
 void GPIO_DeInit(GPIO_TypeDef* GPIOx);
+
+/**
+ * @brief 将AFIO外设（复用功能IO）恢复到默认复位状态
+ * @note 用于清除所有复用功能重映射、外部中断配置等
+ * @example GPIO_AFIODeInit(); // 复位AFIO外设
+ */
 void GPIO_AFIODeInit(void);
+
+/**
+ * @brief 初始化指定GPIO端口的引脚配置
+ * @param GPIOx: GPIO端口指针 (GPIOA~GPIOG)
+ * @param GPIO_InitStruct: 指向GPIO初始化结构体的指针，包含：
+ *        - GPIO_Pin: 引脚号 (如GPIO_Pin_0、GPIO_Pin_All等)
+ *        - GPIO_Speed: 输出速度 (GPIO_Speed_10MHz/50MHz/100MHz)
+ *        - GPIO_Mode: 工作模式 (输入/输出/复用功能/模拟输入等)
+ * @example 配置PA0为推挽输出，速度50MHz
+ * GPIO_InitTypeDef GPIO_InitStruct;
+ * GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;
+ * GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
+ * GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+ * GPIO_Init(GPIOA, &GPIO_InitStruct);
+ */
 void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct);
+
+/**
+ * @brief 初始化GPIO_InitTypeDef结构体为默认值
+ * @param GPIO_InitStruct: 指向GPIO初始化结构体的指针
+ * @note 默认值：输入浮空模式、所有引脚、10MHz速度
+ * @example 
+ * GPIO_InitTypeDef GPIO_InitStruct;
+ * GPIO_StructInit(&GPIO_InitStruct); // 初始化结构体为默认值
+ */
 void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct);
+
+/**
+ * @brief 读取指定GPIO引脚的输入电平
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要读取的引脚号 (如GPIO_Pin_1)
+ * @return 引脚电平 (Bit_RESET=0，Bit_SET=1)
+ * @example uint8_t level = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+ */
 uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+/**
+ * @brief 读取整个GPIO端口的输入数据
+ * @param GPIOx: GPIO端口指针
+ * @return 16位数据，每一位对应一个引脚的输入电平 (bit0对应Pin0，以此类推)
+ * @example uint16_t port_val = GPIO_ReadInputData(GPIOA); // 读取GPIOA所有引脚输入
+ */
 uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx);
+
+/**
+ * @brief 读取指定GPIO引脚的输出寄存器电平
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要读取的引脚号
+ * @return 输出寄存器电平 (Bit_RESET=0，Bit_SET=1)
+ * @note 与ReadInputDataBit的区别：此函数读取输出寄存器，而非实际引脚电平
+ * @example uint8_t out_level = GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_5);
+ */
 uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+/**
+ * @brief 读取整个GPIO端口的输出寄存器数据
+ * @param GPIOx: GPIO端口指针
+ * @return 16位数据，每一位对应输出寄存器的状态
+ * @example uint16_t out_val = GPIO_ReadOutputData(GPIOB); // 读取GPIOB输出寄存器
+ */
 uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx);
+
+/**
+ * @brief 将指定GPIO引脚设置为高电平
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要设置的引脚号 (可同时设置多个，如GPIO_Pin_0 | GPIO_Pin_1)
+ * @example GPIO_SetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_2); // PA0和PA2置高
+ */
 void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+/**
+ * @brief 将指定GPIO引脚设置为低电平
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要复位的引脚号 (可同时复位多个)
+ * @example GPIO_ResetBits(GPIOA, GPIO_Pin_0); // PA0置低
+ */
 void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+/**
+ * @brief 向指定GPIO引脚写入指定电平
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要操作的引脚号
+ * @param BitVal: 要写入的电平 (Bit_RESET=0，Bit_SET=1)
+ * @example GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_SET); // PB3置高
+ */
 void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal);
+
+/**
+ * @brief 向整个GPIO端口写入16位数据
+ * @param GPIOx: GPIO端口指针
+ * @param PortVal: 16位端口值 (bit0对应Pin0，以此类推)
+ * @example GPIO_Write(GPIOC, 0x000F); // PC0~PC3置高，其余置低
+ */
 void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal);
+
+/**
+ * @brief 锁定指定GPIO引脚的配置
+ * @param GPIOx: GPIO端口指针
+ * @param GPIO_Pin: 要锁定的引脚号
+ * @note 锁定后引脚配置无法修改，直到下次复位
+ * @example GPIO_PinLockConfig(GPIOA, GPIO_Pin_0); // 锁定PA0的配置
+ */
 void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+/**
+ * @brief 配置事件输出功能的引脚
+ * @param GPIO_PortSource: 事件输出的端口源 (GPIO_PortSourceGPIOA~GPIOG)
+ * @param GPIO_PinSource: 事件输出的引脚源 (GPIO_PinSource0~15)
+ * @example GPIO_EventOutputConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0); // 配置PA0为事件输出
+ */
 void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource);
+
+/**
+ * @brief 使能或禁用事件输出功能
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @example GPIO_EventOutputCmd(ENABLE); // 使能事件输出
+ */
 void GPIO_EventOutputCmd(FunctionalState NewState);
+
+/**
+ * @brief 配置GPIO引脚的复用功能重映射
+ * @param GPIO_Remap: 重映射类型 (如GPIO_Remap_USART1、GPIO_PartialRemap_TIM2等)
+ * @param NewState: 使能状态 (ENABLE/DISABLE)
+ * @note 部分重映射需要开启AFIO时钟
+ * @example GPIO_PinRemapConfig(GPIO_Remap_USART1, ENABLE); // 重映射USART1到备用引脚
+ */
 void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState);
+
+/**
+ * @brief 配置外部中断线与GPIO引脚的映射关系
+ * @param GPIO_PortSource: 端口源 (GPIO_PortSourceGPIOA~GPIOG)
+ * @param GPIO_PinSource: 引脚源 (GPIO_PinSource0~15)
+ * @example GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0); // 配置PA0连接到EXTI0
+ */
 void GPIO_EXTILineConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource);
+
+/**
+ * @brief 配置以太网媒体接口的GPIO引脚
+ * @param GPIO_ETH_MediaInterface: 以太网接口类型 (GPIO_ETH_MediaInterface_MII/RMII)
+ * @note 仅在带以太网外设的STM32型号中有效
+ * @example GPIO_ETH_MediaInterfaceConfig(GPIO_ETH_MediaInterface_RMII); // 配置为RMII接口
+ */
 void GPIO_ETH_MediaInterfaceConfig(uint32_t GPIO_ETH_MediaInterface);
 
 #ifdef __cplusplus
@@ -382,4 +517,4 @@ void GPIO_ETH_MediaInterfaceConfig(uint32_t GPIO_ETH_MediaInterface);
   * @}
   */
 
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+/******************* (C) 版权所有 2011 意法半导体 *****文件结束****/
