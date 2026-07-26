@@ -145,7 +145,6 @@ void USART1_IRQHandler()
 			}
 		}
 		USART_ClearFlag(USART1,USART_FLAG_RXNE);
-
 	}	
 }
 

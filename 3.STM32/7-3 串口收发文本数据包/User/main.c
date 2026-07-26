@@ -13,6 +13,7 @@ int main()
 
 	OLED_ShowString(1,1,"RxData:");
 	OLED_ShowString(3,1,"TxData:");
+	Serial_SendString("ERROR_COMMAND\r\n");
 	while(1)
 	{
 		if(Serial_RxFlag == 1)
