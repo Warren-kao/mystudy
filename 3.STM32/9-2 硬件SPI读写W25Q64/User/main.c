@@ -8,11 +8,12 @@ int main()
 {
 	OLED_Init();
 	W25Q64_Init();
-	W25Q64_ReadID();
+
 	
 	OLED_ShowString(1,1,"MID:   DID:");
-	OLED_ShowHexNum(1,5,W25Q64_Data.MID,2);
-	OLED_ShowHexNum(1,12,W25Q64_Data.DID,4);
+	W25Q64_ReadID();
+	OLED_ShowHexNum(1,5,W25Q64_ID.MID,2);
+	OLED_ShowHexNum(1,12,W25Q64_ID.DID,4);
 	OLED_ShowString(2,1,"W:");
 	OLED_ShowString(3,1,"R:");
 	
