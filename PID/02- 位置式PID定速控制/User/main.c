@@ -81,6 +81,8 @@ void TIM1_UP_IRQHandler()
 			if(Out < -100){Out = -100;}
 			
 			Motor_SetPWM(Out);
+			
+			
 
 			
 		}
