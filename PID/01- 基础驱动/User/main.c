@@ -13,11 +13,15 @@
 
 //串口测试
 uint16_t RP1,RP2,RP3,RP4;
+int16_t Speed;
+int16_t Location;
 int main ()
 {
 	OLED_Init();
 	RP_Init();
 	Serial_Init();
+	Encoder_Init();
+	Timer_Init();
 	while(1)
 	{
 		RP1 = RP_GetValue(1);
@@ -30,12 +34,27 @@ int main ()
 		OLED_Printf(0,48,OLED_8X16,"RP4:%04d",RP4);
 		OLED_Update();
 		
-		printf("%d,%d,%d,%d\n",RP1,RP2,RP3,RP4);
+		printf("%d,%d,%d,%d,%d,%d\n",RP1,RP2,RP3,RP4,Speed,Location);
 		Delay_ms(10);
 	}
 }
 
-
+void TIM1_UP_IRQHandler()
+{
+	static uint16_t count;
+	if(TIM_GetFlagStatus(TIM1,TIM_IT_Update) == SET)
+	{
+		count++;
+		if(count >= 40)
+		{
+			count = 0;
+			Speed = Encoder_Get();
+			Location += Speed;
+		}
+		TIM_ClearFlag(TIM1,TIM_IT_Update);
+	}
+	
+}
 
 
 //编码器测试
