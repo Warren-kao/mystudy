@@ -15,7 +15,7 @@ uint8_t KeyNum;
 int16_t PWM,Speed,Location;
 PID_t Inner = 
 {
-	.Kp = 1.3,
+	.Kp = 1.4,
 	.Ki = 0.25,
 	.Kd = 0,
 	
