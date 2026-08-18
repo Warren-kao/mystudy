@@ -39,18 +39,19 @@
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
 
-#define configUSE_PREEMPTION		1
-#define configUSE_IDLE_HOOK			0
-#define configUSE_TICK_HOOK			0
-#define configCPU_CLOCK_HZ			( ( unsigned long ) 72000000 )	
-#define configTICK_RATE_HZ			( ( TickType_t ) 1000 )
-#define configMAX_PRIORITIES		( 5 )
-#define configMINIMAL_STACK_SIZE	( ( unsigned short ) 128 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 17 * 1024 ) )
-#define configMAX_TASK_NAME_LEN		( 16 )
-#define configUSE_TRACE_FACILITY	0
-#define configUSE_16_BIT_TICKS		0
-#define configIDLE_SHOULD_YIELD		1
+#define configUSE_PREEMPTION                    1   /* 抢占式调度 */
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1   /* 硬件优化任务选择 */
+#define configUSE_IDLE_HOOK                    0   /* 空闲钩子（禁用） */
+#define configUSE_TICK_HOOK                    0   /* 节拍钩子（禁用） */
+#define configCPU_CLOCK_HZ                     ( ( unsigned long ) 72000000 ) /* CPU主频72MHz */
+#define configTICK_RATE_HZ                     ( ( TickType_t ) 1000 ) /* 节拍1000Hz */
+#define configMAX_PRIORITIES                   ( 5 ) /* 最大优先级数 */
+#define configMINIMAL_STACK_SIZE               ( ( unsigned short ) 128 ) /* 空闲任务栈（字） */
+#define configTOTAL_HEAP_SIZE                  ( ( size_t ) ( 17 * 1024 ) ) /* 堆总大小17KB */
+#define configMAX_TASK_NAME_LEN                ( 16 ) /* 任务名最大长度 */
+#define configUSE_TRACE_FACILITY               0   /* 跟踪功能禁用 */
+#define configUSE_16_BIT_TICKS                 0   /* 32位节拍计数器 */
+#define configIDLE_SHOULD_YIELD                1   /* 空闲任务让步 */
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
@@ -86,4 +87,7 @@ NVIC value of 255. */
 #define xPortSysTickHandler		SysTick_Handler
 
 #endif /* FREERTOS_CONFIG_H */
+
+
+
 
