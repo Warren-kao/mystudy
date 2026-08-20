@@ -47,11 +47,14 @@
 #define configTICK_RATE_HZ                     ( ( TickType_t ) 1000 ) /* 节拍1000Hz */
 #define configMAX_PRIORITIES                   ( 5 ) /* 最大优先级数 */
 #define configMINIMAL_STACK_SIZE               ( ( unsigned short ) 128 ) /* 空闲任务栈（字） */
-#define configTOTAL_HEAP_SIZE                  ( ( size_t ) ( 17 * 1024 ) ) /* 堆总大小17KB */
+#define	configTIMER_TASK_STACK_DEPTH			( ( unsigned short ) 128 )
+#define configTOTAL_HEAP_SIZE                  ( ( size_t ) ( 5 * 1024 ) ) /* 堆总大小17KB */
 #define configMAX_TASK_NAME_LEN                ( 16 ) /* 任务名最大长度 */
 #define configUSE_TRACE_FACILITY               0   /* 跟踪功能禁用 */
 #define configUSE_16_BIT_TICKS                 0   /* 32位节拍计数器 */
 #define configIDLE_SHOULD_YIELD                1   /* 空闲任务让步 */
+
+#define configSUPPORT_STATIC_ALLOCATION			1
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
