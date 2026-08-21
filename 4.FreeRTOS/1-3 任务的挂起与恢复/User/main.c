@@ -6,6 +6,7 @@
 #include "Key.h"
 #include <stdio.h>
 #include "Serial.h"
+#include "Timer.h"
 
 #define START_TASK_PRIO			0
 #define START_TASK_STACK_SIZE	128
@@ -42,7 +43,7 @@ void Task2(void * pvParameters )
 	{
 		printf("Task2正在运行!!!%zu\r\n",j++);
 		LED2_Turn();
-		vTaskDelay(300);
+		vTaskDelay(500);
 	}
 }
 
@@ -86,6 +87,7 @@ int main(void)
 	LED_Init();
 	Key_Init();
 	Serial_Init();
+	Timer_Init();
 	 
 	xTaskCreate(Start_Task,"Start_Task"
 				,START_TASK_STACK_SIZE,NULL
@@ -97,3 +99,21 @@ int main(void)
 	}
  
 }
+
+
+void TIM2_IRQHandler()
+{
+	if(TIM_GetFlagStatus(TIM2,TIM_IT_Update) == SET)
+	{
+		
+		xTaskResumeFromISR(Task1Handler);
+		printf("-----------------------\r\n");
+
+		
+
+		
+		TIM_ClearFlag(TIM2,TIM_IT_Update);
+	}
+	
+}
+
