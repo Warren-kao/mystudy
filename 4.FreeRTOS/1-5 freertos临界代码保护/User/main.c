@@ -97,3 +97,6 @@ int main(void)
 	}
  
 }
+
+//暂时先去学习链表,等学习链表结束接续学习freertos
+
