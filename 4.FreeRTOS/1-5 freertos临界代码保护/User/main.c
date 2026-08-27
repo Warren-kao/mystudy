@@ -59,6 +59,7 @@ void Task3(void * pvParameters )
 				vTaskDelete(Task1Handler);	
 				Task1Handler = NULL;
 			}else{
+				
 				xTaskCreate(Task1,"Task1",TASK1_STACK_SIZE,NULL,TASK1_PRIO,&Task1Handler);
 			}
 
@@ -90,6 +91,7 @@ int main(void)
 	xTaskCreate(Start_Task,"Start_Task"
 				,START_TASK_STACK_SIZE,NULL
 				,START_TASK_PRIO,&StartTaskHandler);
+	
 	
 	vTaskStartScheduler();
 	while (1)
