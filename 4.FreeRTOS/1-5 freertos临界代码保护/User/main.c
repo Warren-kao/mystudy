@@ -19,6 +19,7 @@ TaskHandle_t Task1Handler = NULL;
 #define TASK2_STACK_SIZE	128
 TaskHandle_t Task2Handler = NULL;
 
+
 #define TASK3_PRIO			3
 #define TASK3_STACK_SIZE	128
 TaskHandle_t Task3Handler = NULL;
@@ -31,6 +32,8 @@ void Task1(void * pvParameters )
 		printf("Task1正在运行!!!\r\n");
 		LED1_Turn();
 		vTaskDelay(500);
+		
+		
 	}
 }
 
