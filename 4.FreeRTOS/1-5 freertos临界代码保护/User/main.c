@@ -44,6 +44,7 @@ void Task2(void * pvParameters )
 		printf("Task2正在运行!!!\r\n");
 		LED2_Turn();
 		vTaskDelay(300);
+		
 	}
 }
 
