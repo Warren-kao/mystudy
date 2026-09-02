@@ -30,8 +30,7 @@ void Task1(void * pvParameters )
 { 
 	while(1)
 	{
-		printf("Task1正在运行!!!\r\n");
-		LED1_Turn();
+
 		vTaskDelay(500);
 		
 		
