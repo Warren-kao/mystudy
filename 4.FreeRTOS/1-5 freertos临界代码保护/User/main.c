@@ -33,6 +33,8 @@ void Task1(void * pvParameters )
 	{
 
 		vTaskDelay(500);
+
+
 		
 		
 	}
