@@ -29,6 +29,8 @@ TaskHandle_t Task2Handler = NULL;
 #define TASK3_STACK_SIZE	128
 TaskHandle_t Task3Handler = NULL;
 
+
+
 void Task1(void * pvParameters )
 { 
 	while(1)
