@@ -1,5 +1,4 @@
 
-
 #include "stm32f10x.h"                  // Device header
 #include "OLED.h" 
 #include "freertos.h"
@@ -8,7 +7,6 @@
 #include "Key.h"
 #include <stdio.h>
 #include "Serial.h"
-
 
 
 #define START_TASK_PRIO			0
