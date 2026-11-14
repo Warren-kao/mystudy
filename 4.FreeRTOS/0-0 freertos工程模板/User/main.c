@@ -1,42 +1,105 @@
 #include "stm32f10x.h"                  // Device header
-#include "OLED.h"
-#include "freertos.h"
+
+#include "LED.h"
+
+#include "FreeRTOS.h"
 #include "task.h"
 
+//任务优先级
+#define START_TASK_PRIO		1
+//任务堆栈大小	
+#define START_STK_SIZE 		128  
+//任务句柄
+TaskHandle_t StartTask_Handler;
+//任务函数
+void start_task(void *pvParameters);
 
-static TaskHandle_t myTaskHandler = NULL;
- 
-void myTask(void *arg )
-{ 
-	while(1)
-	{
-		GPIO_ResetBits(GPIOC,GPIO_Pin_13);
-		vTaskDelay(500);
-		GPIO_SetBits(GPIOC,GPIO_Pin_13);
-		vTaskDelay(500);
-	}
-}
- 
-int main(void)
+//任务优先级
+#define LED1_TASK_PRIO		2
+//任务堆栈大小	
+#define LED1_STK_SIZE 		50  
+//任务句柄
+TaskHandle_t LED1Task_Handler;
+//任务函数
+void led1_task(void *pvParameters);
+
+
+//任务优先级
+#define LED2_TASK_PRIO		2
+//任务堆栈大小	
+#define LED2_STK_SIZE 		50  
+//任务句柄
+TaskHandle_t LED2Task_Handler;
+//任务函数
+void led2_task(void *pvParameters);
+
+
+/*******************************************************************************
+* 函 数 名         : main
+* 函数功能		   : 主函数
+* 输    入         : 无
+* 输    出         : 无
+*******************************************************************************/
+int main()
 {
- 
-	GPIO_InitTypeDef GPIO_Initstruct;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
-	GPIO_Initstruct.GPIO_Mode=GPIO_Mode_Out_PP;
-	GPIO_Initstruct.GPIO_Pin=GPIO_Pin_13;
-	GPIO_Initstruct.GPIO_Speed=GPIO_Speed_50MHz;
-	GPIO_Init(GPIOC,&GPIO_Initstruct);
+	LED_Init();
 	
-	GPIO_ResetBits(GPIOC,GPIO_Pin_13);
-	 
-
-	xTaskCreate(myTask,"myTask",512,NULL,2,&myTaskHandler);
-	 
-	vTaskStartScheduler();
- 
-	while (1)
-	{
-	 
-	}
- 
+	//创建开始任务
+    xTaskCreate((TaskFunction_t )start_task,            //任务函数
+                (const char*    )"start_task",          //任务名称
+                (uint16_t       )START_STK_SIZE,        //任务堆栈大小
+                (void*          )NULL,                  //传递给任务函数的参数
+                (UBaseType_t    )START_TASK_PRIO,       //任务优先级
+                (TaskHandle_t*  )&StartTask_Handler);   //任务句柄              
+    vTaskStartScheduler();          //开启任务调度
 }
+
+//开始任务任务函数
+void start_task(void *pvParameters)
+{
+    taskENTER_CRITICAL();           //进入临界区
+      
+    //创建LED1任务
+    xTaskCreate((TaskFunction_t )led1_task,     
+                (const char*    )"led1_task",   
+                (uint16_t       )LED1_STK_SIZE, 
+                (void*          )NULL,
+                (UBaseType_t    )LED1_TASK_PRIO,
+                (TaskHandle_t*  )&LED1Task_Handler); 
+				
+    //创建LED2任务
+    xTaskCreate((TaskFunction_t )led2_task,     
+                (const char*    )"led2_task",   
+                (uint16_t       )LED2_STK_SIZE, 
+                (void*          )NULL,
+                (UBaseType_t    )LED2_TASK_PRIO,
+                (TaskHandle_t*  )&LED2Task_Handler); 
+				
+    vTaskDelete(StartTask_Handler); //删除开始任务
+    taskEXIT_CRITICAL();            //退出临界区
+} 
+
+//LED1任务函数
+void led1_task(void *pvParameters)
+{
+    while(1)
+    {
+        LED1_ON();
+        vTaskDelay(200);
+        LED1_OFF();
+        vTaskDelay(200);
+    }
+}
+
+//LED2任务函数
+void led2_task(void *pvParameters)
+{
+    while(1)
+    {
+        LED2_ON();
+        vTaskDelay(1000);
+        LED2_OFF();
+        vTaskDelay(1000);
+    }
+}
+

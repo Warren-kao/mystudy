@@ -24,6 +24,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 
+/*引入FreeRTOS文件*/
+#include "FreeRTOS.h"//引入FreeRTOS文件
+#include "task.h"//引入task.h文件
+
+extern void xPortSysTickHandler(void);  //函数声明
+
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -132,9 +138,13 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-//void SysTick_Handler(void)
-//{
-//}
+void SysTick_Handler(void)
+{
+	if(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED)//如果开启了调度
+	{
+		xPortSysTickHandler();
+	}
+}
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
