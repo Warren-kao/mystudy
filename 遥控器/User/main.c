@@ -2,6 +2,7 @@
 #include "OLED.h"
 #include "Key.h"
 #include "AD.h"
+#include "Delay.h"
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
 	
 	while(1)
 	{
-		Num = Key_GetNum();
+		Num          = Key_GetNum();
 		if(Num)
 			OLED_ShowNum(2,1,Num,2);
 		//左摇杆
