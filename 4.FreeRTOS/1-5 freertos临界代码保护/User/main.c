@@ -7,12 +7,9 @@
 #include <stdio.h>
 #include "Serial.h"
 
-
 #define START_TASK_PRIO			0
 #define START_TASK_STACK_SIZE	128
 TaskHandle_t StartTaskHandler = NULL;
-
-
 
 #define TASK1_PRIO			1
 #define TASK1_STACK_SIZE	128
@@ -25,7 +22,6 @@ TaskHandle_t Task2Handler = NULL;
 #define TASK3_PRIO			3
 #define TASK3_STACK_SIZE	128
 TaskHandle_t Task3Handler = NULL;
-
 
 void Task1(void * pvParameters )
 { 
